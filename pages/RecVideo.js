@@ -1,10 +1,9 @@
-import React, {useState, Fragment} from "react";
+import React, {useState, useEffect} from "react";
 import * as Permissions from "expo-permissions";
-import { TouchableOpacity, View} from "react-native";
 import MyCam from "../components/MyCam";
 import {Video} from "expo-av";
 import {  Text, Button, Container, Content, Grid, Row } from 'native-base';
-import AppHeader from "../components/Header";
+import withAuthAppWrapper from "../higher_order_components/AuthAppWrapper";
 
 
 
@@ -15,6 +14,8 @@ const RecVideo = (props) => {
     })
 
     let videoRef =  React.useRef()
+
+
 
 
     const _showCamera = async () => {
@@ -59,4 +60,4 @@ const RecVideo = (props) => {
     )
 }
 
-export default RecVideo
+export default withAuthAppWrapper(RecVideo)

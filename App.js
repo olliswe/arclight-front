@@ -4,11 +4,9 @@ import RecVideo from "./pages/RecVideo";
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import {  Text, Container, Drawer } from 'native-base';
-import AppHeader from "./components/Header";
-import AppFooter from "./components/Footer";
+import withUserContext from "./higher_order_components/UserContextWrapper";
 
-
-export default function App() {
+const App = () => {
 
   const [loading, setLoading] = useState(true)
 
@@ -25,15 +23,6 @@ export default function App() {
         .then(res=>{setLoading(false)})
   })
 
-  const drawer = useRef()
-
-  const closeDrawer = () => {
-    drawer.current._root.close()
-  };
-
-  const openDrawer = () => {
-    drawer.current._root.open()
-  };
 
   return (
         loading ?
@@ -41,15 +30,7 @@ export default function App() {
               <Text>Loading...</Text>
             </Container>
             :
-            <Drawer
-                ref={drawer}
-                content={<Container><Text>Drawer..</Text></Container>}
-                onClose={() => closeDrawer()}
-            >
-              <AppHeader openDrawer={openDrawer}/>
-              <RecVideo/>
-              <AppFooter/>
-            </Drawer>
+              <RecVideo test={'hello'} />
   )
 }
 
@@ -61,6 +42,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default withUserContext(App)
 
 
 
