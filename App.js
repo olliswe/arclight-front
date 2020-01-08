@@ -1,6 +1,6 @@
 import React, {useEffect, useState, Fragment, useRef} from 'react';
 import { StyleSheet} from 'react-native';
-import RecVideo from "./RecVideo";
+import RecVideo from "./pages/RecVideo";
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import {  Text, Container, Drawer } from 'native-base';

@@ -1,10 +1,10 @@
 import React, {useState, Fragment} from "react";
 import * as Permissions from "expo-permissions";
 import { TouchableOpacity, View} from "react-native";
-import MyCam from "./MyCam";
+import MyCam from "../components/MyCam";
 import {Video} from "expo-av";
 import {  Text, Button, Container, Content, Grid, Row } from 'native-base';
-import AppHeader from "./components/Header";
+import AppHeader from "../components/Header";
 
 
 
