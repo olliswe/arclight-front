@@ -1,10 +1,11 @@
 import React, {useEffect, useState, Fragment, useRef} from 'react';
 import { StyleSheet} from 'react-native';
-import RecVideo from "./pages/RecVideo";
+import RecVideo from "./screens/RecVideo";
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import {  Text, Container, Drawer } from 'native-base';
 import withUserContext from "./higher_order_components/UserContextWrapper";
+import AppContainer from "./navigation";
 
 const App = () => {
 
@@ -30,7 +31,7 @@ const App = () => {
               <Text>Loading...</Text>
             </Container>
             :
-              <RecVideo test={'hello'} />
+              <AppContainer/>
   )
 }
 
