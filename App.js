@@ -7,6 +7,9 @@ import {  Text, Container, Drawer } from 'native-base';
 import withUserContext from "./higher_order_components/UserContextWrapper";
 import AppContainer from "./navigation";
 
+// Remove Comments if you want to display warnings
+console.disableYellowBox = true;
+
 const App = () => {
 
   const [loading, setLoading] = useState(true)
@@ -31,7 +34,7 @@ const App = () => {
               <Text>Loading...</Text>
             </Container>
             :
-              <AppContainer/>
+            <AppContainer/>
   )
 }
 

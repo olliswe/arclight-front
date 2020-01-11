@@ -1,4 +1,5 @@
 import React, {createContext} from 'react'
+import * as SecureStore from 'expo-secure-store';
 
 
 const UserContext = createContext()
@@ -7,29 +8,31 @@ const UserContext = createContext()
 let initialState = {
     user:null,
     token:null,
-    isAuthenticated:false
+    isAuthenticated:false,
+    loading:true,
 };
+
+const storeToken = async (token)=>{
+    try{
+    await SecureStore.setItemAsync('token',token);
+    }catch (error){
+        console.log(error)
+        console.log('error saving token')
+    }
+}
 
 let reducer = (state, action) => {
 
     switch (action.type) {
         case "logout":
-            // Storage.remove({key:'user'})
-            // Storage.remove({key:'token'})
-            return initialState;
+            SecureStore.deleteItemAsync('token')
+            return {user:null, token:null, isAuthenticated: false, loading:false};
         case "login":
-            // Storage.set({key: 'user',value:
-            //         JSON.stringify({
-            //             id: action.payload.user.id,
-            //             email: action.payload.user.email,
-            //             first_name:action.payload.user.first_name,
-            //             last_name:action.payload.user.last_name,
-            //             full_name:action.payload.user.full_name
-            //         }).toString()
-            //
-            // });
-            // Storage.set({key: 'token',value: action.payload.token});
-            return { user:action.payload.user, token:action.payload.token, isAuthenticated:true };
+            storeToken(action.payload.token)
+            return { user:action.payload.user, token:action.payload.token, isAuthenticated:true, loading:false }
+        case "loaded":
+            return { ...state, loading:false }
+
     }
 };
 

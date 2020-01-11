@@ -3,7 +3,8 @@ import * as Permissions from "expo-permissions";
 import MyCam from "../components/MyCam";
 import {Video} from "expo-av";
 import {  Text, Button, Container, Content, Grid, Row } from 'native-base';
-import withAuthAppWrapper from "../higher_order_components/AuthAppWrapper";
+import withHeaderFooter from "../higher_order_components/AuthHeaderFooterWrapper";
+
 
 
 
@@ -14,7 +15,6 @@ const RecVideo = (props) => {
     })
 
     let videoRef =  React.useRef()
-
 
 
 
@@ -60,4 +60,4 @@ const RecVideo = (props) => {
     )
 }
 
-export default withAuthAppWrapper(RecVideo)
+export default withHeaderFooter(RecVideo)

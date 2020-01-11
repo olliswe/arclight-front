@@ -1,9 +1,10 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {Container, Drawer, Text} from "native-base";
 import AppHeader from "../components/Header";
 import AppFooter from "../components/Footer";
+import DrawerContent from "../components/DrawerContent";
 
-const withAuthAppWrapper =  (WrappedComponent) => {
+const withHeaderFooter =  (WrappedComponent) => {
 
     return (
         function (props) {
@@ -17,10 +18,13 @@ const withAuthAppWrapper =  (WrappedComponent) => {
                 drawer.current._root.open()
             };
 
+
+
+
             return(
                 <Drawer
                     ref={drawer}
-                    content={<Container><Text>Drawer..</Text></Container>}
+                    content={<DrawerContent/>}
                     onClose={() => closeDrawer()}
                 >
                     <AppHeader openDrawer={openDrawer}/>
@@ -32,4 +36,4 @@ const withAuthAppWrapper =  (WrappedComponent) => {
     );
 };
 
-export default withAuthAppWrapper;
+export default withHeaderFooter;
