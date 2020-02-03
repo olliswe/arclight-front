@@ -25,7 +25,9 @@ const MyCam = (props) => {
 
     const recordVideo = async() => {
         console.log('hello from RecordVideo')
-        const videoRecording = await cam.current.recordAsync();
+        const videoRecording = await cam.current.recordAsync(
+            {quality:Camera.Constants.VideoQuality['4:3']}
+        );
         return videoRecording
     }
 
@@ -50,7 +52,7 @@ const MyCam = (props) => {
         console.log('hello from save Video')
         console.log(asset)
         if (asset) {
-            props.setRecordedVideo({uri:video.uri})
+            props.setRecordedVideo({uri:asset.uri, filename:asset.filename})
             console.log('video saved!')
         }
     };
@@ -91,7 +93,8 @@ const MyCam = (props) => {
                 justifyContent: "flex-end",
                 flex:1,
                 alignItems:'center',
-                width: "100%"
+                width: "100%",
+                ratio:"16:9",
             }}
             ref={cam}
         >
