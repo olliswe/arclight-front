@@ -1,39 +1,33 @@
 import React, {useRef, useEffect} from 'react';
 import {Container, Drawer, Text} from "native-base";
+import {View} from 'react-native'
 import AppHeader from "../components/Header";
 import AppFooter from "../components/Footer";
 import DrawerContent from "../components/DrawerContent";
+import {withNavigation} from "react-navigation";
 
-const withHeaderFooter =  (WrappedComponent) => {
+const withHeader =  (WrappedComponent) => {
 
     return (
-        function (props) {
-            const drawer = useRef()
+        withNavigation(function (props) {
 
-            const closeDrawer = () => {
-                drawer.current._root.close()
-            };
 
             const openDrawer = () => {
-                drawer.current._root.open()
+                props.navigation.openDrawer()
             };
 
 
 
 
-            return(
-                <Drawer
-                    ref={drawer}
-                    content={<DrawerContent/>}
-                    onClose={() => closeDrawer()}
-                >
+                return(
+                <Container>
                     <AppHeader openDrawer={openDrawer}/>
-                    <WrappedComponent {...props}/>
-                    <AppFooter/>
-                </Drawer>
+                    <WrappedComponent {...props}    />
+                </Container>
             )
         }
-    );
+    )
+)
 };
 
-export default withHeaderFooter;
+export default withHeader;

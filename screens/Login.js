@@ -1,8 +1,10 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {Container, Button, Text, Content, Item, Input, Form} from 'native-base'
+import {Container, Button, Text, Content, Item, Input, Form, Spinner} from 'native-base'
 import {StyleSheet, Image, View} from "react-native";
 import {UserContext} from "../context/userContext";
 import axios from 'axios'
+import {withNavigation} from 'react-navigation'
+import {API_URL} from "../constants";
 
 const Login = (props) => {
 
@@ -20,6 +22,8 @@ const Login = (props) => {
     }, [userContext.state])
 
 
+
+
     const handleLogin = () =>{
         setLoading(true)
         setError(false)
@@ -27,7 +31,7 @@ const Login = (props) => {
             username:email,
             password:password
         }
-        axios.post(process.env.API_URL+'accounts/api-token-auth/',body)
+        axios.post(API_URL+'accounts/api-token-auth/',body)
             .then(res=>{
                 userContext.dispatch({ type: "login", payload:{user:res.data.user,token:res.data.token} })
             })
@@ -41,7 +45,7 @@ const Login = (props) => {
     return (
         <Container style={styles.container}>
             <Content>
-                <View style={styles.imageView}>
+                <View>
                     <Image
                         source={require('../assets/arclight_logo.png')}
                         style={styles.image}
@@ -61,26 +65,34 @@ const Login = (props) => {
                             secureTextEntry={true}
                             value={password}
                             onChangeText={(text)=>{setPassword(text)}}
+                            onSubmitEditing={handleLogin}
                         />
                     </Item>
-                    <Button onPress={handleLogin} style={styles.button}>
-                        <Text>
-                            Login
-                        </Text>
+                    <Button onPress={handleLogin} style={styles.button} disabled={loading}>
+                        {loading ?
+                            <Spinner color='white'/>
+                            :
+                            <Text>
+                                Login
+                            </Text>
+                        }
                     </Button>
                     {
                         error &&
-                        <Container style={styles.container}>
+                        <View>
                             <Text style={styles.centeredText}>
                                 Your email and password didn't match.
                             </Text>
                             <Text style={styles.centeredText}>
                                 Please try again.
                             </Text>
-                        </Container>
-
+                        </View>
                     }
                 </Form>
+                <Text style={styles.link} onPress={()=>{
+                    props.navigation.navigate('ForgotPassword')}}>
+                    Forgot Password?
+                </Text>
             </Content>
         </Container>
     );
@@ -92,8 +104,8 @@ const styles = StyleSheet.create({
         padding:10,
     },
     centeredText:{
-      textAlign:'center',
-      marginBottom: 10
+        textAlign:'center',
+        marginTop: 10
     },
     image:{
         width:'100%',
@@ -109,7 +121,13 @@ const styles = StyleSheet.create({
     },
     button:{
         justifyContent:'center',
+    },
+    link:{
+        textAlign: 'center',
+        marginTop:50,
+        textDecorationLine:'underline',
+        padding:20
     }
 });
 
-export default Login;
+export default withNavigation(Login);

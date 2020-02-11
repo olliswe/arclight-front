@@ -37,35 +37,36 @@ const MyCam = (props) => {
                 .then(res=>{
                     console.log('callback from stopped recording')
                     saveVideo(res)
+                        .then(
+                            res=>props.setShowCamera(false)
+                        )
                     }
                 )
+                .catch(error=>console.log(error))
         }
         else if (recording === false){
             cam.current.stopRecording()
-            props.setShowCamera(false)
         }
     }, [recording]);
 
 
     const saveVideo = async (video) => {
         const asset = await MediaLibrary.createAssetAsync(video.uri);
-        console.log('hello from save Video')
-        console.log(asset)
         if (asset) {
+            console.log(asset)
             props.setRecordedVideo({uri:asset.uri, filename:asset.filename})
             console.log('video saved!')
         }
+        return ('Video Saved')
     };
 
 
     const stopRecord = () => {
-        console.log('stopped recordg')
         setRecording(false)
     };
 
     const startRecord = () => {
         if (cam){
-            console.log('recording!')
             setRecording(true)
             }
     }

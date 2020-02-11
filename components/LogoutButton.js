@@ -19,8 +19,8 @@ const LogoutButton = (props) => {
     }
 
     return (
-        <Button onPress={handleLogout}>
-            <Text>
+        <Button onPress={handleLogout} bordered danger style={{justifyContent:'center'}}>
+            <Text style={{color:'red'}}>
                 Logout
             </Text>
         </Button>

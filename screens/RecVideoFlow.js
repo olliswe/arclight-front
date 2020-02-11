@@ -9,6 +9,8 @@ import MyCam from "../components/MyCam";
 import {Video} from "expo-av";
 import axios from "axios";
 import {UserContext} from "../context/userContext";
+import {API_URL} from "../constants";
+import movToMp4 from "react-native-mov-to-mp4";
 
 
 const RecVideoFlow = (props) => {
@@ -26,7 +28,7 @@ const RecVideoFlow = (props) => {
     const [showCamera, setShowCamera] = useState(false)
     const [recordedVideo, setRecordedVideo] = useState({
         uri:null,
-        filename:null
+        filename:null,
     })
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -57,7 +59,7 @@ const RecVideoFlow = (props) => {
                     onPress: () => {},
                     style: 'cancel',
                 },
-                {text: 'OK', onPress: () => props.navigation.navigate('Home')},
+                {text: 'OK', onPress: () => props.navigation.navigate('HomeScreen')},
             ],
             {cancelable: true},
         );
@@ -84,11 +86,11 @@ const RecVideoFlow = (props) => {
     }
 
     const handleSubmit = () => {
-        setLoading(true)
+        setLoading(true);
         const data = new FormData();
         data.append("file", {
             name: recordedVideo.filename,
-            type:"video/mp4",
+            type:"video",
             uri:recordedVideo.uri
         });
         data.append("name", patientInfo.name)
@@ -96,7 +98,7 @@ const RecVideoFlow = (props) => {
 
         let headers = {'Authorization':'Token '+token, 'Content-Type':'multipart/form-data'}
 
-        axios.post(process.env.API_URL+'api/upload_video/',data,{headers:headers} )
+        axios.post(API_URL+'api/upload_video/',data,{headers:headers} )
             .then(res=>{
                 setLoading(false)
                 setSuccess(true)
@@ -138,7 +140,7 @@ const RecVideoFlow = (props) => {
                         Success!
                     </Text>
                     <Button style={styles.topMargin}
-                            onPress={()=>props.navigation.navigate('Home')}
+                            onPress={()=>props.navigation.navigate('HomeScreen')}
                     >
                         <Text>Close
                         </Text>
@@ -175,9 +177,9 @@ const RecVideoFlow = (props) => {
     <Container>
         <Icon name="md-close" style={{
             position: 'absolute',
-            left: 10,
+            left: 20,
             right: 0,
-            top: 5,
+            top: 20,
             bottom: 0
         }}
               onPress={handleCancel}
@@ -190,6 +192,7 @@ const RecVideoFlow = (props) => {
                 <ProgressStep label="Patient Info"
                               nextBtnDisabled={firstDisabled}
                               onNext={()=>{setActiveStep(activeStep=>activeStep+1)}}
+                              scrollViewProps={{scrollEnabled:false}}
                 >
                     <View style={{alignItems: 'center'}}>
                         <PatientForm

@@ -20,7 +20,7 @@ const PatientForm = (props) => {
                     </Text>
                 </View>
                 <View
-                    style={{flexGrow: 1, height: 50}}
+                    style={{ height: 50}}
                 >
                     <DatePicker
                         defaultDate={today}
@@ -36,7 +36,8 @@ const PatientForm = (props) => {
                         disabled={false}
                         placeHolderText={'Select Date'}
                         value={props.patientInfo.dob}
-                    />
+                        isDarkModeEnabled={false}
+                        />
                 </View>
             </View>
             <View>

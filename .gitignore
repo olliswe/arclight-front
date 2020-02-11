@@ -11,8 +11,8 @@ web-build/
 web-report/
 .env
 .idea
-.env.development
 .env.production
+.env.development
 
 # macOS
 .DS_Store

@@ -33,6 +33,11 @@
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#334393"
-    }
+    },
+    "scheme": "arclight",
+    "extra": {
+      "API_URL": "https://arclight.ngrok.io/"
+    },
+    "description": ""
   }
 }
