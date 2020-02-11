@@ -18,6 +18,7 @@ const Home = (props) => {
                     </Body>
                 <CardItem bordered>
                     <Body>
+
                     </Body>
                 </CardItem>
             </Card>

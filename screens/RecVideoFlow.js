@@ -10,7 +10,7 @@ import {Video} from "expo-av";
 import axios from "axios";
 import {UserContext} from "../context/userContext";
 import {API_URL} from "../constants";
-import movToMp4 from "react-native-mov-to-mp4";
+import AssetUtils from 'expo-asset-utils';
 
 
 const RecVideoFlow = (props) => {
@@ -90,7 +90,7 @@ const RecVideoFlow = (props) => {
         const data = new FormData();
         data.append("file", {
             name: recordedVideo.filename,
-            type:"video",
+            type:"video/mp4",
             uri:recordedVideo.uri
         });
         data.append("name", patientInfo.name)
@@ -206,6 +206,7 @@ const RecVideoFlow = (props) => {
                     onNext={()=>{setActiveStep(activeStep=>activeStep+1)}}
                     style={styles.topMargin}
                     nextBtnDisabled={recordedVideo.uri===null}
+                    scrollViewProps={{scrollEnabled:false}}
                 >
                     {!!recordedVideo.uri ?
                         <View style={{flexDirection:'column', alignItems: 'center', }}>
@@ -242,6 +243,7 @@ const RecVideoFlow = (props) => {
                 <ProgressStep
                     label="Review & Submit"
                     onSubmit = {handleSubmit}
+                    scrollViewProps={{scrollEnabled:false}}
                 >
                     <View style={{alignItems: 'center', flexDirection:'column'}}>
                         <View style={styles.topMargin}>

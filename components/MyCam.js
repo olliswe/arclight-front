@@ -52,9 +52,9 @@ const MyCam = (props) => {
 
     const saveVideo = async (video) => {
         const asset = await MediaLibrary.createAssetAsync(video.uri);
+        const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
         if (asset) {
-            console.log(asset)
-            props.setRecordedVideo({uri:asset.uri, filename:asset.filename})
+            props.setRecordedVideo({uri:assetInfo.localUri, filename:asset.filename})
             console.log('video saved!')
         }
         return ('Video Saved')

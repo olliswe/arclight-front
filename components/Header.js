@@ -13,7 +13,7 @@ const AppHeader = (props) => {
                     </Button>
                 </Left>
                 <Body>
-                    <Title>ArcLight Medical</Title>
+                    <Title>Version 0.1</Title>
                 </Body>
                 <Right>
                 </Right>
