@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Fragment, useRef} from 'react';
+import React, {useEffect, useState, Fragment, useContext} from 'react';
 import { StyleSheet} from 'react-native';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,13 +7,32 @@ import withUserContext from "./higher_order_components/UserContextWrapper";
 import AppContainer from "./navigation";
 import {Linking} from 'expo'
 import {API_URL} from "./constants";
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+import {UserContext} from "./context/userContext";
 
 // Remove Comments if you want to display warnings
 console.disableYellowBox = true;
 
 const App = () => {
 
+  let userContext = useContext(UserContext)
+
+
+  const client = new ApolloClient({
+    uri: API_URL+'graphql/', // your GraphQL Server
+    request: (operation) => {
+      const token = userContext.state.token;
+      operation.setContext({
+        headers: {
+          authorization: token ? `Token ${token}` : ''
+        }
+      })
+    }
+  });
+
   const [loading, setLoading] = useState(true)
+
 
   const getInititalLink = async() =>{
     Linking.getInitialURL
@@ -43,7 +62,9 @@ const App = () => {
               <Text>Loading...</Text>
             </Container>
             :
-            <AppContainer uriPrefix={prefix} />
+            <ApolloProvider client={client}>
+              <AppContainer uriPrefix={prefix} />
+            </ApolloProvider>
   )
 }
 

@@ -1,15 +1,47 @@
-import React from 'react';
-import {View} from 'react-native'
-import {Text} from 'native-base'
+import React, {useEffect} from 'react';
+import {Text, Content} from 'native-base'
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
+import PatientCard from "../components/PatientCard";
+import { useQuery } from 'react-apollo';
+import { gql } from 'apollo-boost';
+
+
+const QUERY_PATIENTS = gql`
+    query{
+      myPatients{
+        edges{
+          node{
+            fullName,
+            uid,
+            gender
+          }
+        }
+      }
+    }
+`;
 
 const PatientInfo = (props) => {
+
+    const { data, loading } = useQuery(
+        QUERY_PATIENTS, {
+            onCompleted: data => {
+                // Not called
+                console.log(data);
+            },
+        }
+    );
+
     return (
-        <View>
+        <Content padder>
+            {loading ?
             <Text>
-                Patient Info Page
+                Loading...
             </Text>
-        </View>
+            :
+                <PatientCard/>
+
+            }
+        </Content>
     );
 };
 
