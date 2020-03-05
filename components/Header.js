@@ -13,7 +13,7 @@ const AppHeader = (props) => {
                     </Button>
                 </Left>
                 <Body>
-                    <Title>Version 0.1</Title>
+                    <Title>Version 0.21</Title>
                 </Body>
                 <Right>
                 </Right>

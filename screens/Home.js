@@ -18,7 +18,7 @@ const Home = (props) => {
                             style={styles.image}
                         />
                         <H3 style={styles.header}>
-                            {user.facility.facility_name}
+                            {user && user.facility.facility_name}
                         </H3>
                     </Body>
                 <CardItem bordered>
