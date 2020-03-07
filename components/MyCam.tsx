@@ -45,7 +45,7 @@ const MyCam:React.FC<Props> = (props) => {
         if (!!cam.current) {
             return await cam.current.recordAsync({...getOptions()})
         } else {
-            alert('No Camera Found!')
+            alert('The Camera is still loading, please wait!')
         }
     }
 
@@ -65,8 +65,6 @@ const MyCam:React.FC<Props> = (props) => {
             } else if (recording === false) {
                 cam.current.stopRecording()
             }
-        } else {
-            alert('No Camera Found!')
         }
     }, [recording]);
 

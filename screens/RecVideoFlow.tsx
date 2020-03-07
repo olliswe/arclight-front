@@ -100,19 +100,21 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
     }
 
     const handleSubmit = () => {
-        if (!!patientInfo.dob && patientInfo.name !== '') {
+        if (patientInfo.dob  && recordedVideo.filename) {
 
             setLoading(true);
             const data = new FormData();
+            // @ts-ignore
             data.append("file",
                 JSON.stringify({
                     name: recordedVideo.filename,
                     type: "video/mp4",
                     uri: recordedVideo.uri
-                })
+                }), recordedVideo.filename
             );
             data.append("name", patientInfo.name);
             data.append("dob", patientInfo.dob.toISOString());
+            console.log(data)
 
             let headers = {'Authorization': 'Token ' + token, 'Content-Type': 'multipart/form-data'}
 
