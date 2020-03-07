@@ -1,13 +1,14 @@
 import React, {useContext, useEffect} from 'react';
-import {UserContext} from "../context/userContext";
+import {UserContext, UserContextProps} from "../context/userContext";
 import {Container, Text} from 'native-base'
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store';
 import {API_URL} from "../constants";
+import {StackNavigationProp} from "../types";
 
-const AuthLoadingScreen = (props) => {
+const AuthLoadingScreen:React.FC<StackNavigationProp> = (props) => {
 
-    const context = useContext(UserContext)
+    const context:UserContextProps = useContext(UserContext)
 
 
     const getUserData = async() => {

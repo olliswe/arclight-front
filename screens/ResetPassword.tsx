@@ -4,13 +4,18 @@ import {Image, StyleSheet, View} from "react-native";
 import {withNavigation} from 'react-navigation'
 import axios from 'axios'
 import {API_URL} from "../constants";
+import {StackNavigationProp} from "../types";
 
-const ResetPassword = (props) => {
-    const [loading, setLoading] = useState(false)
-    const [success, setSuccess] = useState(false)
-    const [error, setError] = useState(false)
-    const [passwordOne, setPasswordOne] = useState('')
-    const [passwordTwo, setPasswordTwo] = useState('')
+interface Props{
+    navigation:StackNavigationProp
+}
+
+const ResetPassword:React.FC<Props> = (props) => {
+    const [loading, setLoading] = useState<boolean>(false)
+    const [success, setSuccess] = useState<boolean>(false)
+    const [error, setError] = useState<boolean>(false)
+    const [passwordOne, setPasswordOne] = useState<string>('')
+    const [passwordTwo, setPasswordTwo] = useState<string>('')
 
     const token = props.navigation.getParam('token')
 
@@ -38,7 +43,7 @@ const ResetPassword = (props) => {
     return (
         <Container style={styles.container}>
             <Content>
-                <View style={styles.imageView}>
+                <View>
                     <Image
                         source={require('../assets/arclight_logo.png')}
                         style={styles.image}

@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import {Text} from 'native-base'
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 
-const Surveys = (props) => {
+const Surveys:React.FC = () => {
     return (
         <View>
             <Text>

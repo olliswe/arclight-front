@@ -1,5 +1,5 @@
-import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
+import { createStackNavigator, NavigationStackProp } from 'react-navigation-stack'
+import { createBottomTabNavigator, BottomTabBar, BottomTabBarProps } from 'react-navigation-tabs';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import RecVideoPage from '../screens/RecVideoPage'
 import RecVideoFlow from "../screens/RecVideoFlow";
@@ -26,7 +26,7 @@ const ScreeningStackNavigator = createStackNavigator(
     }
 )
 
-ScreeningStackNavigator.navigationOptions = ({ navigation }) => {
+ScreeningStackNavigator.navigationOptions = (navigation:NavigationStackProp) => {
     let tabBarVisible = true;
     if (navigation.state.index > 0) {
         tabBarVisible = false;
@@ -37,7 +37,7 @@ ScreeningStackNavigator.navigationOptions = ({ navigation }) => {
 };
 
 
-const TabBarComponent = props => <BottomTabBar {...props} />;
+const TabBarComponent:React.FC<BottomTabBarProps> = props => <BottomTabBar {...props} />;
 
 // Bottom tab navigator for the main app
 const MainBottomTabNavigator = createBottomTabNavigator(

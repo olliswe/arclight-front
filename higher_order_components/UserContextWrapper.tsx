@@ -1,9 +1,9 @@
 import React from 'react';
 import {UserContextProvider} from "../context/userContext";
 
-const withUserContext =  (WrappedComponent) => {
+const withUserContext =  (WrappedComponent:React.FC) => {
     return (
-        function(props){
+        function(props:object){
             return(
             <UserContextProvider><WrappedComponent {...props}/></UserContextProvider>
             )

@@ -3,7 +3,11 @@ import {Button, Grid, Row, Text} from "native-base";
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 import {StackNavigationProp} from "../types";
 
-const RecVideoPage:React.FC<StackNavigationProp> = (props) => {
+interface Props {
+    navigation:StackNavigationProp,
+}
+
+const RecVideoPage:React.FC<Props> = (props:Props) => {
 
     return (
         <Grid>

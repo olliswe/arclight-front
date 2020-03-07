@@ -9,14 +9,13 @@ import {Linking} from 'expo'
 import {API_URL} from "./constants";
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import {UserContext} from "./context/userContext";
+import {UserContext, UserContextProps} from "./context/userContext";
 
-// Remove Comments if you want to display warnings
 console.disableYellowBox = true;
 
 const App = () => {
 
-  let userContext = useContext(UserContext)
+  let userContext:UserContextProps = useContext(UserContext)
 
 
   const client = new ApolloClient({
@@ -34,9 +33,7 @@ const App = () => {
   const [loading, setLoading] = useState(true)
 
 
-  const getInititalLink = async() =>{
-    Linking.getInitialURL
-  }
+
 
   const loadFont = async() => {
     await Font.loadAsync({
@@ -58,7 +55,7 @@ const App = () => {
 
   return (
         loading ?
-            <Container>
+            <Container style={styles.container}>
               <Text>Loading...</Text>
             </Container>
             :
@@ -67,6 +64,8 @@ const App = () => {
             </ApolloProvider>
   )
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

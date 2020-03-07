@@ -12,7 +12,7 @@ type NavProps = {
 
 // (WrapperComponent:React.FC) => React.FC<NavProps>
 
-const withHeader= (WrappedComponent: React.FC) => {
+const withHeader= (WrappedComponent:React.FC<any>) => {
 
     return (
         withNavigation(function (props: JSX.IntrinsicAttributes & { children?: React.ReactNode; } & NavProps) {
