@@ -3,14 +3,14 @@ import {View} from 'react-native'
 import {Text} from 'native-base'
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 
-const Help = (props) => {
+const Diagnosis:React.FC = () => {
     return (
         <View>
             <Text>
-                Help Page
+                Diagnosis Page
             </Text>
         </View>
     );
 };
 
-export default withHeader(Help);
+export default withHeader(Diagnosis);

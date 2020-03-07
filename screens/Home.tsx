@@ -4,7 +4,7 @@ import {H3, Card, Content, Text, Body, CardItem} from 'native-base'
 import {UserContext} from "../context/userContext";
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 
-const Home = (props) => {
+const Home:React.FC = () => {
 
     let userContext = useContext(UserContext);
     let user = userContext.state.user

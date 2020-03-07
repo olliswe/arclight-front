@@ -1,9 +1,15 @@
 import React from 'react';
 import {Container,  DatePicker, Text, Item, Label, Input } from "native-base";
-import { Col, Row, Grid } from 'react-native-easy-grid';
 import {View} from 'react-native'
+import {PatientInfo} from "../screens/RecVideoFlow";
 
-const PatientForm = (props) => {
+
+type Props = {
+    patientInfo:PatientInfo,
+    setPatientInfo:(value: PatientInfo | ((prevVar: PatientInfo) => PatientInfo)) => void
+}
+
+const PatientForm:React.FC<Props> = (props) => {
     const today = new Date()
 
     return (
@@ -35,8 +41,6 @@ const PatientForm = (props) => {
                         onDateChange={(newDate)=>{props.setPatientInfo({...props.patientInfo, dob:newDate})}}
                         disabled={false}
                         placeHolderText={'Select Date'}
-                        value={props.patientInfo.dob}
-                        isDarkModeEnabled={false}
                         />
                 </View>
             </View>

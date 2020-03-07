@@ -3,14 +3,14 @@ import {View} from 'react-native'
 import {Text} from 'native-base'
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 
-const Profile = (props) => {
+const About:React.FC = () => {
     return (
         <View>
             <Text>
-                Profile Page
+                About Page
             </Text>
         </View>
     );
 };
 
-export default withHeader(Profile);
+export default withHeader(About);

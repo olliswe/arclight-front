@@ -2,29 +2,38 @@ import React, {useEffect, useState} from "react";
 import * as MediaLibrary from 'expo-media-library';
 import {Camera} from "expo-camera";
 import { TouchableOpacity, StyleSheet, Platform} from "react-native";
-import { Audio } from 'expo-av';
 import * as Permissions from 'expo-permissions'
 import {Container, Text} from "native-base";
 import {Ionicons} from '@expo/vector-icons'
+import {VideoFile} from "../screens/RecVideoFlow";
 
-const offSet = 150
+const offSet:number = 150
 
-const MyCam = (props) => {
 
-    const [picture, setPicture] = useState(null)
-    const [recording, setRecording] = useState(null)
-    const [hasPermission, setHasPermission] = useState(null);
-    const [focus, setFocus] = useState(0.5)
-    const [zoom, setZoom] = useState(0)
-    const [cameraNotReady, setCameraNotReady] = useState(false)
 
-    let cam = React.useRef()
+
+type Props = {
+    setShowCamera:(value: boolean | ((prevVar: boolean) => boolean)) => void,
+    setRecordedVideo:(value: VideoFile | ((prevVar: VideoFile) => VideoFile)) => void,
+}
+
+
+
+const MyCam:React.FC<Props> = (props) => {
+
+    const [recording, setRecording] = useState<boolean | null>(null)
+    const [hasPermission, setHasPermission] = useState<boolean|null>(null);
+    const [focus, setFocus] = useState<number>(0.5)
+    const [zoom, setZoom] = useState<number>(0)
+    const [cameraNotReady, setCameraNotReady] = useState<boolean>(false)
+
+    let cam = React.useRef<Camera>(null)
 
 
     useEffect(() => {
         (async () => {
             const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING, Permissions.CAMERA);
-            setHasPermission(status === 'granted');
+            setHasPermission(true);
         })();
     }, []);
 
@@ -33,39 +42,47 @@ const MyCam = (props) => {
 
 
     const recordVideo = async() => {
-        console.log('hello from RecordVideo')
-        const videoRecording = await cam.current.recordAsync({...getOptions()})
-
-        return videoRecording
+        if (!!cam.current) {
+            return await cam.current.recordAsync({...getOptions()})
+        } else {
+            alert('No Camera Found!')
+        }
     }
 
     useEffect(()=>{
-        if (recording) {
-            recordVideo()
-                .then(res=>{
-                    console.log('callback from stopped recording')
-                    saveVideo(res)
-                        .then(
-                            res=>props.setShowCamera(false)
-                        )
-                    }
-                )
-                .catch(error=>console.log(error))
-        }
-        else if (recording === false){
-            cam.current.stopRecording()
+        if (!!cam.current) {
+            if (recording) {
+                recordVideo()
+                    .then(res => {
+                            console.log('callback from stopped recording')
+                            saveVideo(res)
+                                .then(
+                                    res => props.setShowCamera(false)
+                                )
+                        }
+                    )
+                    .catch(error => console.log(error))
+            } else if (recording === false) {
+                cam.current.stopRecording()
+            }
+        } else {
+            alert('No Camera Found!')
         }
     }, [recording]);
 
 
-    const saveVideo = async (video) => {
-        const asset = await MediaLibrary.createAssetAsync(video.uri);
-        const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
-        if (asset) {
-            props.setRecordedVideo({uri:assetInfo.localUri, filename:asset.filename})
-            console.log('video saved!')
+    const saveVideo = async (video: { uri: string }|undefined) => {
+        if (!!video) {
+            const asset = await MediaLibrary.createAssetAsync(video.uri);
+            const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
+            if (asset) {
+                props.setRecordedVideo({uri: assetInfo.localUri, filename: asset.filename})
+                console.log('video saved!')
+            }
+            return ('Video Saved')
+        } else {
+            alert("An error occurred when attempting to access the recorded video!")
         }
-        return ('Video Saved')
     };
 
 
@@ -130,7 +147,7 @@ const MyCam = (props) => {
     if (hasPermission === null) {
         return <Container />;
     }
-    if (hasPermission === false) {
+    if (!hasPermission) {
         return <Text>No access to camera</Text>;
     }
 
@@ -140,7 +157,6 @@ const MyCam = (props) => {
             style={{
                 flex:1,
                 width: "100%",
-                ratio:"16:9",
             }}
             ref={cam}
             focusDepth={focus}

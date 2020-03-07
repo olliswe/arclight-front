@@ -1,10 +1,9 @@
 import React from 'react';
-import {Card, Left, Body, Right, Text, CardItem, Grid, Col, Container} from 'native-base'
+import {Card, Left, Body, Right, Text, CardItem, Grid, Col} from 'native-base'
 import {Ionicons} from '@expo/vector-icons'
-const PatientCard = (props) => {
 
 
-
+const PatientCard:React.FC = () => {
     return (
         <Card>
             <CardItem>

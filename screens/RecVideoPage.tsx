@@ -1,10 +1,9 @@
 import React from 'react';
 import {Button, Grid, Row, Text} from "native-base";
-import { withNavigation } from 'react-navigation';
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
-import {compose} from 'redux'
+import {StackNavigationProp} from "../types";
 
-const RecVideoPage = (props) => {
+const RecVideoPage:React.FC<StackNavigationProp> = (props) => {
 
     return (
         <Grid>
@@ -17,4 +16,4 @@ const RecVideoPage = (props) => {
     );
 };
 
-export default compose(withHeader, withNavigation)(RecVideoPage);
+export default withHeader(RecVideoPage);

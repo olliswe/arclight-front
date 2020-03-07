@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Container, Header, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+import React from 'react';
+import {  Footer, FooterTab, Button, Icon } from 'native-base';
 
 
-const AppFooter = (props) => {
+const AppFooter:React.FC = () => {
 
         return (
                 <Footer>

@@ -1,27 +1,43 @@
-import React, {createContext} from 'react'
+import React, {createContext, Dispatch} from 'react'
 import * as SecureStore from 'expo-secure-store';
+import {User} from "../types";
 
 
-const UserContext = createContext()
+const UserContext = createContext<UserContextProps>({} as UserContextProps)
 
 
-let initialState = {
+type UserContextState = {
+    user:User|null,
+    token:string|null,
+    isAuthenticated:boolean,
+    loading:boolean
+}
+
+type UserContextAction =
+    | { type: 'logout' }
+    | { type: 'login', payload:{user:User, token:string}}
+    | { type: 'loaded'};
+
+type UserContextProps = {state:UserContextState,dispatch:Dispatch<UserContextAction>}
+
+
+let initialState:UserContextState = {
     user:null,
     token:null,
     isAuthenticated:false,
     loading:true,
 };
 
-const storeToken = async (token)=>{
+const storeToken = async (token:string)=>{
     try{
-    await SecureStore.setItemAsync('token',token);
+        await SecureStore.setItemAsync('token',token);
     }catch (error){
         console.log(error)
         console.log('error saving token')
     }
 }
 
-let reducer = (state, action) => {
+let reducer = (state:UserContextState, action:UserContextAction) => {
 
     switch (action.type) {
         case "logout":
@@ -36,7 +52,9 @@ let reducer = (state, action) => {
     }
 };
 
-const UserContextProvider = (props) => {
+
+
+const UserContextProvider:React.FC = (props) => {
     // [A]
     let [state, dispatch] = React.useReducer(reducer, initialState);
     let value = { state, dispatch };
@@ -52,4 +70,4 @@ const UserContextProvider = (props) => {
 let UserContextConsumer = UserContext.Consumer;
 
 
-export { UserContext, UserContextProvider, UserContextConsumer };
+export { UserContext, UserContextProvider, UserContextConsumer, UserContextState, UserContextAction, UserContextProps };

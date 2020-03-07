@@ -1,12 +1,11 @@
 import React from 'react'
 import SafeAreaView from 'react-native-safe-area-view';
-import { DrawerItems } from 'react-navigation-drawer';
+import { DrawerItems, DrawerContentComponentProps } from 'react-navigation-drawer';
 import LogoutButton from "./LogoutButton";
 import {StyleSheet, ScrollView, View, Image} from "react-native";
-import {Content} from "native-base";
 
 
-const DrawerContent = props => (
+const DrawerContent:React.FC<DrawerContentComponentProps> = (props:DrawerContentComponentProps) => (
     <ScrollView>
         <SafeAreaView
             style={styles.container}

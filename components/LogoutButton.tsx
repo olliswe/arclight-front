@@ -2,8 +2,9 @@ import React, {useContext, useEffect} from 'react';
 import {Text, Button} from 'native-base'
 import {UserContext} from "../context/userContext";
 import {withNavigation} from 'react-navigation'
+import {NavigationInjectedProps} from "react-navigation";
 
-const LogoutButton = (props) => {
+const LogoutButton:React.FC<NavigationInjectedProps> = (props:NavigationInjectedProps) => {
 
     let userContext = useContext(UserContext)
 

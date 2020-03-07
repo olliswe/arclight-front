@@ -1,23 +1,32 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, ReducerAction, Dispatch} from 'react';
 import {Container, Button, Text, Content, Item, Input, Form, Spinner} from 'native-base'
 import {StyleSheet, Image, View} from "react-native";
-import {UserContext} from "../context/userContext";
+import {UserContext, UserContextProps} from "../context/userContext";
 import axios from 'axios'
 import {withNavigation} from 'react-navigation'
 import {API_URL} from "../constants";
+import {StackNavigationProp} from "../types";
 
-const Login = (props) => {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
+interface Props{
+    navigation:StackNavigationProp
+}
 
-    let userContext = useContext(UserContext);
+
+
+
+const Login:React.FC<Props> = (props:Props) => {
+
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<boolean>(false)
+
+    let userContext:UserContextProps = useContext(UserContext);
 
     useEffect(()=>{
         if (userContext.state.isAuthenticated){
-            props.navigation.navigate('App')
+            props.navigation.navigate("App")
         }
     }, [userContext.state])
 

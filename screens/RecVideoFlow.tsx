@@ -8,47 +8,58 @@ import * as Permissions from "expo-permissions";
 import MyCam from "../components/MyCam";
 import {Video} from "expo-av";
 import axios from "axios";
-import {UserContext} from "../context/userContext";
+import {UserContext, UserContextProps} from "../context/userContext";
 import {API_URL} from "../constants";
-import AssetUtils from 'expo-asset-utils';
+import {StackNavigationProp} from "../types";
 
 
 
-const RecVideoFlow = (props) => {
-    const context = useContext(UserContext)
+export interface PatientInfo {
+    name:string,
+    dob:Date|null
+}
+
+export interface VideoFile {
+    uri:string | null | undefined,
+    filename:string | null | undefined
+}
+
+const progressStepsStyle = {
+    activeStepIconBorderColor: '#334393',
+    activeLabelColor: '#334393',
+    activeStepNumColor: 'white',
+    activeStepIconColor: '#334393',
+    completedStepIconColor: '#334393',
+    completedProgressBarColor: '#334393',
+    completedCheckColor: 'white'
+};
+
+
+const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
+    const context:UserContextProps = useContext(UserContext)
     const token = context.state.token
 
 
 
-    const [patientInfo, setPatientInfo] = useState({
+    const [patientInfo, setPatientInfo] = useState<PatientInfo>({
         name:'',
         dob:null
     })
-    const [activeStep, setActiveStep] = useState(0)
+    const [activeStep, setActiveStep] = useState<0|1|2>(0)
 
-    const [showCamera, setShowCamera] = useState(false)
-    const [recordedVideo, setRecordedVideo] = useState({
+    const [showCamera, setShowCamera] = useState<boolean>(false)
+    const [recordedVideo, setRecordedVideo] = useState<VideoFile>({
         uri:null,
         filename:null,
     })
-    const [loading, setLoading] = useState(false)
-    const [success, setSuccess] = useState(false)
-    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [success, setSuccess] = useState<boolean>(false)
+    const [error, setError] = useState<boolean>(false)
 
-    let videoRef =  useRef()
+    let videoRef =  useRef<Video>(null)
 
-    const firstDisabled = patientInfo.name === '' || patientInfo.dob === null
+    const firstDisabled:boolean = patientInfo.name === '' || patientInfo.dob === null
 
-
-    const progressStepsStyle = {
-        activeStepIconBorderColor: '#334393',
-        activeLabelColor: '#334393',
-        activeStepNumColor: 'white',
-        activeStepIconColor: '#334393',
-        completedStepIconColor: '#334393',
-        completedProgressBarColor: '#334393',
-        completedCheckColor: 'white'
-    };
 
     const handleCancel = () => {
         Alert.alert(
@@ -75,7 +86,9 @@ const RecVideoFlow = (props) => {
     }
 
     const showRecording = () => {
-        videoRef.current.presentFullscreenPlayer()
+        if (!!videoRef.current){
+            videoRef.current.presentFullscreenPlayer()
+        }
     }
 
     const redoRecording = () => {
@@ -87,29 +100,36 @@ const RecVideoFlow = (props) => {
     }
 
     const handleSubmit = () => {
-        setLoading(true);
-        const data = new FormData();
-        data.append("file", {
-            name: recordedVideo.filename,
-            type:"video/mp4",
-            uri:recordedVideo.uri
-        });
-        data.append("name", patientInfo.name)
-        data.append("dob", patientInfo.dob.toISOString())
+        if (!!patientInfo.dob && patientInfo.name !== '') {
 
-        let headers = {'Authorization':'Token '+token, 'Content-Type':'multipart/form-data'}
+            setLoading(true);
+            const data = new FormData();
+            data.append("file",
+                JSON.stringify({
+                    name: recordedVideo.filename,
+                    type: "video/mp4",
+                    uri: recordedVideo.uri
+                })
+            );
+            data.append("name", patientInfo.name);
+            data.append("dob", patientInfo.dob.toISOString());
 
-        axios.post(API_URL+'api/upload_video/',data,{headers:headers} )
-            .then(res=>{
-                setLoading(false)
-                setSuccess(true)
-            })
-            .catch(error=>{
-                console.log(error)
-                setLoading(false)
-                setSuccess(false)
-                setError(true)
-            })
+            let headers = {'Authorization': 'Token ' + token, 'Content-Type': 'multipart/form-data'}
+
+            axios.post(API_URL + 'api/upload_video/', data, {headers: headers})
+                .then(res => {
+                    setLoading(false)
+                    setSuccess(true)
+                })
+                .catch(error => {
+                    console.log(error)
+                    setLoading(false)
+                    setSuccess(false)
+                    setError(true)
+                })
+        }else {
+            setError(true)
+        }
     }
 
 
@@ -192,7 +212,7 @@ const RecVideoFlow = (props) => {
             >
                 <ProgressStep label="Patient Info"
                               nextBtnDisabled={firstDisabled}
-                              onNext={()=>{setActiveStep(activeStep=>activeStep+1)}}
+                              onNext={()=>setActiveStep(1)}
                               scrollViewProps={{scrollEnabled:false}}
                 >
                     <View style={{alignItems: 'center'}}>
@@ -204,7 +224,7 @@ const RecVideoFlow = (props) => {
                 </ProgressStep>
                 <ProgressStep
                     label="Record"
-                    onNext={()=>{setActiveStep(activeStep=>activeStep+1)}}
+                    onNext={()=>setActiveStep(2)}
                     style={styles.topMargin}
                     nextBtnDisabled={recordedVideo.uri===null}
                     scrollViewProps={{scrollEnabled:false}}
@@ -275,12 +295,14 @@ const RecVideoFlow = (props) => {
                     </View>
                 </ProgressStep>
             </ProgressSteps>
+            {!!recordedVideo.uri &&
             <Video
-                ref = {videoRef}
-                source={{ uri: recordedVideo.uri }}
-                style={{display:'none'}}
+                ref={videoRef}
+                source={{uri: recordedVideo.uri}}
+                style={{display: 'none'}}
                 resizeMode="contain"
             />
+            }
         </Container>
     </Container>
             ))

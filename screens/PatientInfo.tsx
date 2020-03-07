@@ -4,6 +4,7 @@ import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 import PatientCard from "../components/PatientCard";
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import {Patient} from "../types";
 
 
 const QUERY_PATIENTS = gql`
@@ -20,9 +21,14 @@ const QUERY_PATIENTS = gql`
     }
 `;
 
-const PatientInfo = (props) => {
 
-    const { data, loading } = useQuery(
+export type PatientData = {
+    myPatients: Patient[]
+}
+
+const PatientInfo:React.FC = () => {
+
+    const { data, loading } = useQuery<PatientData>(
         QUERY_PATIENTS, {
             onCompleted: data => {
                 // Not called
