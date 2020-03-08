@@ -1,9 +1,8 @@
-import React, {useState, useRef, useContext} from 'react';
+import React, {useState, useRef, useContext, useEffect} from 'react';
 import {Container, Text, Icon, Button, Spinner} from "native-base";
 import {ProgressStep, ProgressSteps} from "react-native-progress-steps";
 import {View, Alert, StyleSheet} from "react-native";
 import {withNavigation} from "react-navigation";
-import PatientForm from "../components/PatientForm";
 import * as Permissions from "expo-permissions";
 import MyCam from "../components/MyCam";
 import {Video} from "expo-av";
@@ -11,6 +10,7 @@ import axios from "axios";
 import {UserContext, UserContextProps} from "../context/userContext";
 import {API_URL} from "../constants";
 import {StackNavigationProp} from "../types";
+import PatientInfoSelect from "../components/PatientInfoSelect";
 
 
 
@@ -36,8 +36,10 @@ const progressStepsStyle = {
 
 
 const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
+
     const context:UserContextProps = useContext(UserContext)
     const token = context.state.token
+
 
 
 
@@ -46,7 +48,6 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
         dob:null
     })
     const [activeStep, setActiveStep] = useState<0|1|2>(0)
-
     const [showCamera, setShowCamera] = useState<boolean>(false)
     const [recordedVideo, setRecordedVideo] = useState<VideoFile>({
         uri:null,
@@ -55,6 +56,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [success, setSuccess] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
+    const [selectPatient, setSelectPatient] = useState<boolean>(false)
 
     let videoRef =  useRef<Video>(null)
 
@@ -208,95 +210,102 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
               onPress={handleCancel}
         />
         <Container style={{marginTop: 50}}>
-            <ProgressSteps
-                {...progressStepsStyle}
-                activeStep = {activeStep}
-            >
-                <ProgressStep label="Patient Info"
-                              nextBtnDisabled={firstDisabled}
-                              onNext={()=>setActiveStep(1)}
-                              scrollViewProps={{scrollEnabled:false}}
+            {selectPatient ?
+                <View>
+                    <Button>
+                        <Text>
+                            Select Patient
+                        </Text>
+                    </Button>
+                </View>
+                :
+                <ProgressSteps
+                    {...progressStepsStyle}
+                    activeStep={activeStep}
                 >
-                    <View style={{alignItems: 'center'}}>
-                        <PatientForm
-                            patientInfo={patientInfo}
-                            setPatientInfo={setPatientInfo}
-                        />
-                    </View>
-                </ProgressStep>
-                <ProgressStep
-                    label="Record"
-                    onNext={()=>setActiveStep(2)}
-                    style={styles.topMargin}
-                    nextBtnDisabled={recordedVideo.uri===null}
-                    scrollViewProps={{scrollEnabled:false}}
-                >
-                    {!!recordedVideo.uri ?
-                        <View style={{flexDirection:'column', alignItems: 'center', }}>
-                            <Text style={styles.topMargin}>
-                                Video was successfully recorded !
-                            </Text>
-                            <Button onPress={showRecording} style={styles.topMargin}>
-                                <Text>Show Recording
-                                </Text>
-                                <Icon
-                                    name="eye"
-                                />
-                            </Button>
-                            <Button style={styles.topMargin} onPress={redoRecording}>
-                                <Text>Redo Recording
-                                </Text>
-                                <Icon
-                                    name="refresh"
-                                />
-                            </Button>
-                        </View>
-                        :
+                    <ProgressStep label="Patient Info"
+                                  nextBtnDisabled={firstDisabled}
+                                  onNext={() => setActiveStep(1)}
+                                  scrollViewProps={{scrollEnabled: false}}
+                    >
                         <View style={{alignItems: 'center'}}>
-                            <Button onPress={_showCamera}>
-                                <Text>Start Recording
-                                </Text>
-                                <Icon
-                                    name="camera"
-                                />
-                            </Button>
+                            <PatientInfoSelect/>
                         </View>
-                    }
-                </ProgressStep>
-                <ProgressStep
-                    label="Review & Submit"
-                    onSubmit = {handleSubmit}
-                    scrollViewProps={{scrollEnabled:false}}
-                >
-                    <View style={{alignItems: 'center', flexDirection:'column'}}>
-                        <View style={styles.topMargin}>
-                            <Text>
-                                <Text style={styles.bold}>
-                                    Name:&nbsp;
+                    </ProgressStep>
+                    <ProgressStep
+                        label="Record"
+                        onNext={() => setActiveStep(2)}
+                        style={styles.topMargin}
+                        nextBtnDisabled={recordedVideo.uri === null}
+                        scrollViewProps={{scrollEnabled: false}}
+                    >
+                        {!!recordedVideo.uri ?
+                            <View style={{flexDirection: 'column', alignItems: 'center',}}>
+                                <Text style={styles.topMargin}>
+                                    Video was successfully recorded !
                                 </Text>
-                                {patientInfo.name}
-                            </Text>
-                        </View>
-                        <View style={styles.topMargin}>
-                            <Text>
-                                <Text style={styles.bold}>
-                                    D.O.B:&nbsp;
+                                <Button onPress={showRecording} style={styles.topMargin}>
+                                    <Text>Show Recording
+                                    </Text>
+                                    <Icon
+                                        name="eye"
+                                    />
+                                </Button>
+                                <Button style={styles.topMargin} onPress={redoRecording}>
+                                    <Text>Redo Recording
+                                    </Text>
+                                    <Icon
+                                        name="refresh"
+                                    />
+                                </Button>
+                            </View>
+                            :
+                            <View style={{alignItems: 'center'}}>
+                                <Button onPress={_showCamera}>
+                                    <Text>Start Recording
+                                    </Text>
+                                    <Icon
+                                        name="camera"
+                                    />
+                                </Button>
+                            </View>
+                        }
+                    </ProgressStep>
+                    <ProgressStep
+                        label="Review & Submit"
+                        onSubmit={handleSubmit}
+                        scrollViewProps={{scrollEnabled: false}}
+                    >
+                        <View style={{alignItems: 'center', flexDirection: 'column'}}>
+                            <View style={styles.topMargin}>
+                                <Text>
+                                    <Text style={styles.bold}>
+                                        Name:&nbsp;
+                                    </Text>
+                                    {patientInfo.name}
                                 </Text>
-                                {patientInfo.dob && patientInfo.dob.toString().substr(4, 12)}
-                            </Text>
-                        </View>
-                        <View>
-                            <Button onPress={showRecording} style={styles.topMargin}>
-                                <Text>Show Recording
+                            </View>
+                            <View style={styles.topMargin}>
+                                <Text>
+                                    <Text style={styles.bold}>
+                                        D.O.B:&nbsp;
+                                    </Text>
+                                    {patientInfo.dob && patientInfo.dob.toString().substr(4, 12)}
                                 </Text>
-                                <Icon
-                                    name="eye"
-                                />
-                            </Button>
+                            </View>
+                            <View>
+                                <Button onPress={showRecording} style={styles.topMargin}>
+                                    <Text>Show Recording
+                                    </Text>
+                                    <Icon
+                                        name="eye"
+                                    />
+                                </Button>
+                            </View>
                         </View>
-                    </View>
-                </ProgressStep>
-            </ProgressSteps>
+                    </ProgressStep>
+                </ProgressSteps>
+            }
             {!!recordedVideo.uri &&
             <Video
                 ref={videoRef}

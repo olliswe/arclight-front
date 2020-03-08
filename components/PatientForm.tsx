@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container,  DatePicker, Text, Item, Label, Input } from "native-base";
-import {View} from 'react-native'
+import {View, Switch, StyleSheet} from 'react-native'
 import {PatientInfo} from "../screens/RecVideoFlow";
 
 
@@ -15,10 +15,14 @@ const PatientForm:React.FC<Props> = (props) => {
     return (
         <Container>
             <View
-                style={{flexDirection: 'row', justifyContent:'flex-start', height:50}}
+                style={styles.center}
+            >
+            </View>
+            <View
+                style={styles.row}
             >
                 <View
-                    style={{width: 100, height: 50, marginTop:9}}
+                    style={styles.dob_view}
                 >
                     <Text
                     >
@@ -26,7 +30,7 @@ const PatientForm:React.FC<Props> = (props) => {
                     </Text>
                 </View>
                 <View
-                    style={{ height: 50}}
+                    style={styles.date_view}
                 >
                     <DatePicker
                         defaultDate={today}
@@ -58,3 +62,24 @@ const PatientForm:React.FC<Props> = (props) => {
 };
 
 export default PatientForm;
+
+
+const styles = StyleSheet.create({
+    row:{
+        flexDirection: 'row',
+        justifyContent:'flex-start',
+        height:50
+    },
+    dob_view:{
+        width: 100,
+        height: 50,
+        marginTop:9
+    },
+    date_view:{
+        height: 50
+    },
+    center:{
+        justifyContent: 'center',
+        alignItems:'center'
+    }
+})

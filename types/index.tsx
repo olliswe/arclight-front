@@ -3,14 +3,14 @@ import {NavigationInjectedProps} from "react-navigation";
 import {NavigationDrawerProp} from "react-navigation-drawer";
 import {NavigationTabProp} from "react-navigation-tabs";
 
-export type Facility = {
+export interface Facility {
     id:number,
     facility_name:string
 }
 
 
 
-export type User = {
+export interface User {
     id:number,
     email:string,
     facility:Facility,
@@ -18,12 +18,23 @@ export type User = {
 }
 
 
+interface GQLDataBase {
+    __typename:string
+}
 
-
-export type Patient = {
+export interface PatientData extends GQLDataBase   {
     fullName:string,
-    uid:string,
-    gender:"Male"|"Female"
+    id:string,
+    gender:string,
+    dob:string,
+    telephoneNumber:string,
+    age:string
+}
+
+
+
+export interface PatientQueryObject {
+    myPatients:PatientData[]
 }
 
 export type StackNavigationProp = NavigationStackProp & NavigationInjectedProps

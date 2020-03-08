@@ -13,6 +13,10 @@ import Profile from "../screens/Profile";
 import About from "../screens/About";
 import Help from "../screens/Help";
 import DrawerContent from "../components/DrawerContent";
+import {NavigationRoute, NavigationScreenProp, SupportedThemes} from "react-navigation";
+
+
+'react-native-navigation'
 
 // Navigator for the Home Screen, where video is recorded
 const ScreeningStackNavigator = createStackNavigator(
@@ -26,9 +30,12 @@ const ScreeningStackNavigator = createStackNavigator(
     }
 )
 
-ScreeningStackNavigator.navigationOptions = (navigation:NavigationStackProp) => {
+ScreeningStackNavigator.navigationOptions = (navigation:{
+    navigation: NavigationScreenProp<NavigationRoute<any>>,
+    screenProps: unknown | null,
+    theme: SupportedThemes}) => {
     let tabBarVisible = true;
-    if (navigation.state.index > 0) {
+    if (navigation.navigation.state && navigation.navigation.state.index > 0) {
         tabBarVisible = false;
     }
     return {

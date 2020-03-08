@@ -1,51 +1,50 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {Text, Content} from 'native-base'
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 import PatientCard from "../components/PatientCard";
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import {Patient} from "../types";
+import {PatientQueryObject, PatientData} from "../types";
 
 
 const QUERY_PATIENTS = gql`
     query{
       myPatients{
-        edges{
-          node{
-            fullName,
-            uid,
-            gender
-          }
+        fullName,
+        gender,
+        id,
+        dob,
+        telephoneNumber,
+        age
         }
-      }
     }
 `;
 
 
-export type PatientData = {
-    myPatients: Patient[]
-}
 
 const PatientInfo:React.FC = () => {
 
-    const { data, loading } = useQuery<PatientData>(
+    const [patients, setPatients] = useState<PatientData[] | null>(null)
+
+    const { data, loading } = useQuery<PatientQueryObject>(
         QUERY_PATIENTS, {
             onCompleted: data => {
-                // Not called
-                console.log(data);
+                setPatients(data.myPatients);
             },
         }
     );
 
     return (
         <Content padder>
-            {loading ?
+            {patients === null ?
             <Text>
                 Loading...
             </Text>
             :
-                <PatientCard/>
-
+                ( patients.map((patient)=>(
+                        <PatientCard patient={patient}/>
+                    ))
+                )
             }
         </Content>
     );
