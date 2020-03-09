@@ -4,20 +4,19 @@ import {ProgressStep, ProgressSteps} from "react-native-progress-steps";
 import {View, Alert, StyleSheet} from "react-native";
 import {withNavigation} from "react-navigation";
 import * as Permissions from "expo-permissions";
-import MyCam from "../components/MyCam";
+import MyCam from "../components/screening/MyCam";
 import {Video} from "expo-av";
 import axios from "axios";
 import {UserContext, UserContextProps} from "../context/userContext";
 import {API_URL} from "../constants";
-import {StackNavigationProp} from "../types";
-import PatientInfoSelect from "../components/PatientInfoSelect";
-import PatientSelectForm from "../components/PatientSelectForm";
+import {PatientData, StackNavigationProp} from "../types";
+import PatientInfoSelect from "../components/screening/PatientInfoSelect";
+import PatientSelectForm from "../components/screening/PatientSelectForm";
 
 
-export interface PatientInfo {
-    name:string,
-    dob:Date|null
-}
+
+
+
 
 export interface VideoFile {
     uri:string | null | undefined,
@@ -43,10 +42,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
 
 
 
-    const [patientInfo, setPatientInfo] = useState<PatientInfo>({
-        name:'',
-        dob:null
-    })
+    const [patient, setPatient] = useState<PatientData|null>(null)
     const [activeStep, setActiveStep] = useState<0|1|2>(0)
     const [showCamera, setShowCamera] = useState<boolean>(false)
     const [recordedVideo, setRecordedVideo] = useState<VideoFile>({
@@ -60,7 +56,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
 
     let videoRef =  useRef<Video>(null)
 
-    const firstDisabled:boolean = patientInfo.name === '' || patientInfo.dob === null
+    const firstDisabled:boolean = !!patient
 
 
     const handleCancel = () => {
@@ -102,7 +98,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
     }
 
     const handleSubmit = () => {
-        if (patientInfo.dob  && recordedVideo.filename) {
+        if (patient  && recordedVideo.filename) {
 
             setLoading(true);
             const data = new FormData();
@@ -114,8 +110,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                     uri: recordedVideo.uri
                 }), recordedVideo.filename
             );
-            data.append("name", patientInfo.name);
-            data.append("dob", patientInfo.dob.toISOString());
+            data.append("patient_id", patient.id);
             console.log(data)
 
             let headers = {'Authorization': 'Token ' + token, 'Content-Type': 'multipart/form-data'}
@@ -211,7 +206,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
         />
         <Container style={{marginTop: 50}}>
             {selectPatient ?
-                <PatientSelectForm setSelectPatient={setSelectPatient}/>
+                <PatientSelectForm setSelectPatient={setSelectPatient} setPatient={setPatient}/>
                 :
                 <ProgressSteps
                     {...progressStepsStyle}
@@ -223,7 +218,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                   scrollViewProps={{scrollEnabled: false}}
                     >
                         <View style={{alignItems: 'center'}}>
-                            <PatientInfoSelect setSelectPatient={setSelectPatient}/>
+                            <PatientInfoSelect setSelectPatient={setSelectPatient} />
                         </View>
                     </ProgressStep>
                     <ProgressStep
@@ -276,7 +271,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                     <Text style={styles.bold}>
                                         Name:&nbsp;
                                     </Text>
-                                    {patientInfo.name}
+                                    {patient && patient.fullName}
                                 </Text>
                             </View>
                             <View style={styles.topMargin}>
@@ -284,7 +279,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                     <Text style={styles.bold}>
                                         D.O.B:&nbsp;
                                     </Text>
-                                    {patientInfo.dob && patientInfo.dob.toString().substr(4, 12)}
+                                    {patient && patient.dob}
                                 </Text>
                             </View>
                             <View>

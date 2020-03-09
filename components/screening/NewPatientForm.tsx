@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Container,  DatePicker, Text, Item, Label, Input } from "native-base";
 import {View, StyleSheet} from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
+import {PatientData} from "../../types";
 
 
 interface PatientInfo {
@@ -11,9 +12,14 @@ interface PatientInfo {
     telephone_number:string
 }
 
+interface Props {
+    setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>,
+    setPatient:React.Dispatch<React.SetStateAction<PatientData|null>>
+}
 
 
-const NewPatientForm:React.FC = () => {
+
+const NewPatientForm:React.FC<Props> = (props) => {
 
     const [patientInfo, setPatientInfo] = useState<PatientInfo>({
         full_name:'',
@@ -64,6 +70,7 @@ const NewPatientForm:React.FC = () => {
                         value={patientInfo.full_name}
                         onChangeText={(text)=>{setPatientInfo({...patientInfo, full_name:text})}}
                         placeholder={'Enter name'}
+                        placeholderTextColor='lightgray'
                     />
                 </Item>
             </View>
@@ -97,6 +104,7 @@ const NewPatientForm:React.FC = () => {
                         value={patientInfo.telephone_number}
                         onChangeText={(text)=>{setPatientInfo({...patientInfo, telephone_number:text})}}
                         placeholder={'Enter number'}
+                        placeholderTextColor='lightgray'
                     />
                 </Item>
             </View>

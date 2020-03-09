@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, StyleSheet, Text} from "react-native";
 import {Container, Button} from "native-base";
+import {PatientData} from "../../types";
 
 interface Props {
-    setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>
+    setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const PatientInfoSelect:React.FC<Props> = (props) => {

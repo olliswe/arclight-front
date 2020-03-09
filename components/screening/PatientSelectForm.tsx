@@ -2,9 +2,12 @@ import React, {useState} from 'react';
 import {Button, Container} from "native-base";
 import {StyleSheet, Text, Switch, View} from "react-native";
 import NewPatientForm from "./NewPatientForm";
+import PatientSelect from "./PatientSelect";
+import {PatientData} from "../../types";
 
 interface Props {
-    setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>
+    setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>,
+    setPatient:React.Dispatch<React.SetStateAction<PatientData|null>>
 }
 
 const PatientSelectForm:React.FC<Props> = (props) => {
@@ -22,13 +25,10 @@ const PatientSelectForm:React.FC<Props> = (props) => {
             </View>
             {
                 newPatient ?
-                    <NewPatientForm/>
+                    <NewPatientForm setSelectPatient={props.setSelectPatient} setPatient={props.setPatient}/>
                     :
-                    <Button onPress={()=>props.setSelectPatient(false)}>
-                        <Text>
-                            Patient Selected
-                        </Text>
-                    </Button>
+                    <PatientSelect setSelectPatient={props.setSelectPatient} setPatient={props.setPatient} />
+
             }
 
         </Container>

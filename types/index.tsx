@@ -25,10 +25,10 @@ interface GQLDataBase {
 export interface PatientData extends GQLDataBase   {
     fullName:string,
     id:string,
-    gender:string,
-    dob:string,
-    telephoneNumber:string,
-    age:string
+    gender?:string,
+    dob?:string,
+    telephoneNumber?:string,
+    age?:string
 }
 
 
