@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React,{useEffect} from 'react';
 import {Text, Content} from 'native-base'
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 import PatientCard from "../components/PatientCard";
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import {PatientQueryObject, PatientData} from "../types";
+import {PatientQueryObject, StackNavigationProp} from "../types";
+import {NavigationFocusInjectedProps} from "react-navigation";
 
 
 const QUERY_PATIENTS = gql`
@@ -21,27 +22,27 @@ const QUERY_PATIENTS = gql`
 `;
 
 
+interface Props extends NavigationFocusInjectedProps {}
 
-const PatientInfo:React.FC = () => {
+const PatientInfo:React.FC<Props> = (props) => {
 
-    const [patients, setPatients] = useState<PatientData[] | null>(null)
-
-    const { data, loading } = useQuery<PatientQueryObject>(
-        QUERY_PATIENTS, {
-            onCompleted: data => {
-                setPatients(data.myPatients);
-            },
+    useEffect(()=> {
+        props.isFocused && refetch()
         }
-    );
+        ,[props.isFocused])
+
+
+    const { data, loading, refetch } = useQuery<PatientQueryObject>(QUERY_PATIENTS,
+        {fetchPolicy:'network-only'});
 
     return (
         <Content padder>
-            {patients === null ?
+            {loading ?
             <Text>
                 Loading...
             </Text>
             :
-                ( patients.map((patient)=>(
+                ( data?.myPatients.map((patient)=>(
                         <PatientCard patient={patient}/>
                     ))
                 )

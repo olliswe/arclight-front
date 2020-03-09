@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container } from "native-base";
 import AppHeader from "../components/Header";
-import { NavigationInjectedProps} from "react-navigation";
+import { NavigationInjectedProps, withNavigationFocus, NavigationFocusInjectedProps} from "react-navigation";
 import {NavigationDrawerProp} from "react-navigation-drawer";
 
 
@@ -14,7 +14,8 @@ type NavProps = {
 
 const withHeader= (WrappedComponent:React.FC<any>) => {
 
-    return (function (props: JSX.IntrinsicAttributes & { children?: React.ReactNode; } & NavProps) {
+    return (
+        withNavigationFocus(function (props: JSX.IntrinsicAttributes & { children?: React.ReactNode; } & NavProps & NavigationFocusInjectedProps) {
 
 
             const openDrawer = () => {
@@ -31,6 +32,7 @@ const withHeader= (WrappedComponent:React.FC<any>) => {
                 </Container>
             )
         }
+        )
 )
 };
 

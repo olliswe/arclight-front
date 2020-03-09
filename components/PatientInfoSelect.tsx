@@ -2,14 +2,18 @@ import React from 'react';
 import {View, StyleSheet, Text} from "react-native";
 import {Container, Button} from "native-base";
 
-const PatientInfoSelect:React.FC = () => {
+interface Props {
+    setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const PatientInfoSelect:React.FC<Props> = (props) => {
     return (
         <Container style={styles.container}>
             <View style={styles.view}>
                 <Text>
                     Before starting the screening, you need to select an existing patient or add a new one
                 </Text>
-                <Button style={styles.button}>
+                <Button style={styles.button} onPress={()=>props.setSelectPatient(true)}>
                     <Text style={styles.text}>
                         Select Patient
                     </Text>

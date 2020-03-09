@@ -11,7 +11,7 @@ import {UserContext, UserContextProps} from "../context/userContext";
 import {API_URL} from "../constants";
 import {StackNavigationProp} from "../types";
 import PatientInfoSelect from "../components/PatientInfoSelect";
-
+import PatientSelectForm from "../components/PatientSelectForm";
 
 
 export interface PatientInfo {
@@ -211,13 +211,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
         />
         <Container style={{marginTop: 50}}>
             {selectPatient ?
-                <View>
-                    <Button>
-                        <Text>
-                            Select Patient
-                        </Text>
-                    </Button>
-                </View>
+                <PatientSelectForm setSelectPatient={setSelectPatient}/>
                 :
                 <ProgressSteps
                     {...progressStepsStyle}
@@ -229,7 +223,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                   scrollViewProps={{scrollEnabled: false}}
                     >
                         <View style={{alignItems: 'center'}}>
-                            <PatientInfoSelect/>
+                            <PatientInfoSelect setSelectPatient={setSelectPatient}/>
                         </View>
                     </ProgressStep>
                     <ProgressStep
