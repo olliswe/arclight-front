@@ -12,6 +12,7 @@ import {API_URL} from "../constants";
 import {PatientData, StackNavigationProp} from "../types";
 import PatientInfoSelect from "../components/screening/PatientInfoSelect";
 import PatientSelectForm from "../components/screening/PatientSelectForm";
+import PatientRecord from "../components/screening/PatientRecord";
 
 
 
@@ -56,7 +57,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
 
     let videoRef =  useRef<Video>(null)
 
-    const firstDisabled:boolean = !!patient
+    const firstDisabled:boolean = patient === null
 
 
     const handleCancel = () => {
@@ -218,7 +219,11 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                   scrollViewProps={{scrollEnabled: false}}
                     >
                         <View style={{alignItems: 'center'}}>
-                            <PatientInfoSelect setSelectPatient={setSelectPatient} />
+                            {!!patient ?
+                                <PatientRecord patient={patient} setPatient={setPatient} setSelectPatient={setSelectPatient}/>
+                                :
+                                <PatientInfoSelect setSelectPatient={setSelectPatient}/>
+                            }
                         </View>
                     </ProgressStep>
                     <ProgressStep
@@ -271,7 +276,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                     <Text style={styles.bold}>
                                         Name:&nbsp;
                                     </Text>
-                                    {patient && patient.fullName}
+                                    {patient && patient.full_name}
                                 </Text>
                             </View>
                             <View style={styles.topMargin}>

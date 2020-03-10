@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
-import {Container,  DatePicker, Text, Item, Label, Input } from "native-base";
+import React, {useContext, useState} from 'react';
+import {Container,  DatePicker, Text, Item, Label, Input, Button } from "native-base";
 import {View, StyleSheet} from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
 import {PatientData} from "../../types";
+import axios from 'axios'
+import {API_URL} from "../../constants";
+import {UserContext, UserContextProps} from "../../context/userContext";
 
 
 interface PatientInfo {
@@ -14,9 +17,11 @@ interface PatientInfo {
 
 interface Props {
     setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>,
-    setPatient:React.Dispatch<React.SetStateAction<PatientData|null>>
+    setPatient:React.Dispatch<React.SetStateAction<PatientData|null>>,
+    setLoading:React.Dispatch<React.SetStateAction<boolean>>
 }
 
+const today = new Date()
 
 
 const NewPatientForm:React.FC<Props> = (props) => {
@@ -28,11 +33,43 @@ const NewPatientForm:React.FC<Props> = (props) => {
         telephone_number:''
     })
 
+    const userContext:UserContextProps = useContext(UserContext)
 
-    const today = new Date()
+
+
+    const handleSubmit = () => {
+        props.setLoading(true)
+        let headers = {'Authorization': 'Token ' + userContext.state.token}
+        axios.post(API_URL+"api/patients/",
+            {...patientInfo,
+                  dob:patientInfo.dob?.toISOString().slice(0,10)
+            }
+            ,{headers:headers} )
+            .then(res=>{
+                props.setPatient(res.data)
+                props.setLoading(false)
+                props.setSelectPatient(false)
+            })
+            .catch(error=>console.log(error))
+    }
+
+    const isDisabled = patientInfo.full_name === '' ||
+                       patientInfo.dob === null ||
+                       patientInfo.gender === null
 
     return (
         <Container style={styles.container}>
+            <View style={styles.inputrow}>
+                <Item inlineLabel>
+                    <Label>Full Name</Label>
+                    <Input
+                        value={patientInfo.full_name}
+                        onChangeText={(text)=>{setPatientInfo({...patientInfo, full_name:text})}}
+                        placeholder={'Enter name'}
+                        placeholderTextColor='lightgray'
+                    />
+                </Item>
+            </View>
             <View
                 style={styles.row}
             >
@@ -63,17 +100,6 @@ const NewPatientForm:React.FC<Props> = (props) => {
                     />
                 </View>
             </View>
-            <View style={styles.inputrow}>
-                <Item inlineLabel>
-                    <Label>Full Name</Label>
-                    <Input
-                        value={patientInfo.full_name}
-                        onChangeText={(text)=>{setPatientInfo({...patientInfo, full_name:text})}}
-                        placeholder={'Enter name'}
-                        placeholderTextColor='lightgray'
-                    />
-                </Item>
-            </View>
             <View
                 style={styles.row}
             >
@@ -86,27 +112,35 @@ const NewPatientForm:React.FC<Props> = (props) => {
                     </Text>
                 </View>
                 <View
-                    style={styles.picker_view}
+                style={styles.picker_view}
                 >
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
+                        onValueChange={(value) => setPatientInfo({...patientInfo, gender:value})}
                         items={[
                             { label: 'Male', value: 'Male' },
                             { label: 'Female', value: 'Female' },
                         ]}
+                        useNativeAndroidPickerStyle={false}
                     />
                 </View>
             </View>
             <View style={styles.inputrow}>
                 <Item inlineLabel>
-                    <Label>Telephone Number</Label>
+                    <Label>Telephone No.</Label>
                     <Input
                         value={patientInfo.telephone_number}
                         onChangeText={(text)=>{setPatientInfo({...patientInfo, telephone_number:text})}}
-                        placeholder={'Enter number'}
+                        placeholder={'Enter number (optional)'}
                         placeholderTextColor='lightgray'
                     />
                 </Item>
+            </View>
+            <View style={[styles.inputrow,styles.center, styles.container]}>
+               <Button onPress={handleSubmit} disabled={isDisabled}>
+                   <Text>
+                       Add Patient
+                   </Text>
+               </Button>
             </View>
         </Container>
     );
@@ -137,7 +171,8 @@ const styles = StyleSheet.create({
         height: 50
     },
     picker_view:{
-        marginTop:10
+        marginTop:10,
+        width:150
     },
     center:{
         justifyContent: 'center',

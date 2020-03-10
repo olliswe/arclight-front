@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Button, Container} from "native-base";
+import React, {useState, Fragment} from 'react';
+import {Spinner, Container} from "native-base";
 import {StyleSheet, Text, Switch, View} from "react-native";
 import NewPatientForm from "./NewPatientForm";
 import PatientSelect from "./PatientSelect";
@@ -13,22 +13,32 @@ interface Props {
 const PatientSelectForm:React.FC<Props> = (props) => {
 
     const [newPatient, setNewPatient] = useState<boolean>(false)
-
+    const [loading, setLoading] = useState<boolean>(false)
 
     return (
         <Container style={styles.container}>
-            <View style={styles.centerRow}>
-                <Switch value={newPatient} onValueChange={(value)=>setNewPatient(value)}/>
-                <Text>
-                    &nbsp; &nbsp; New Patient
-                </Text>
-            </View>
+            {
+                loading ?
+                <View style={styles.spinner}>
+                    <Spinner/>
+                </View>
+                    :
+
+            <Fragment>
+                <View style={styles.centerRow}>
+                    <Switch value={newPatient} onValueChange={(value) => setNewPatient(value)}/>
+                    <Text>
+                        &nbsp; &nbsp; New Patient
+                    </Text>
+                </View>
             {
                 newPatient ?
-                    <NewPatientForm setSelectPatient={props.setSelectPatient} setPatient={props.setPatient}/>
-                    :
-                    <PatientSelect setSelectPatient={props.setSelectPatient} setPatient={props.setPatient} />
+                <NewPatientForm setSelectPatient={props.setSelectPatient} setPatient={props.setPatient} setLoading={setLoading}/>
+                :
+                <PatientSelect setSelectPatient={props.setSelectPatient} setPatient={props.setPatient} />
 
+            }
+            </Fragment>
             }
 
         </Container>
@@ -49,6 +59,11 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         margin:20
+    },
+    spinner:{
+        flex:1,
+        justifyContent: 'center',
+        alignItems:'center'
     }
 
 })

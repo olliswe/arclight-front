@@ -18,7 +18,7 @@ const PatientCard:React.FC<Props> = (props) => {
                     <Grid>
                         <Col size={8}>
                             <Text>
-                                {props.patient.fullName}
+                                {props.patient.full_name}
                             </Text>
                             <Text>
                                 ID: {props.patient.id}

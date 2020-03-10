@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native'
+import {View, Text, ScrollView, StyleSheet} from 'react-native'
 import {Item, Input} from "native-base";
 import { useLazyQuery  } from 'react-apollo';
 import { gql } from 'apollo-boost';
@@ -7,12 +7,13 @@ import {PatientData, PatientQueryObject} from "../../types";
 import PatientSelectCard from "./PatientSelectCard";
 
 const QUERY_PATIENTS = gql`
-    query myPatients($searchString:String){
-          myPatients(fullName_Icontains:$searchString){
-                fullName,
+    query my_patients($searchString:String){
+          my_patients(full_name__icontains:$searchString){
+                full_name,
                 dob,
                 gender,
-                id
+                id,
+                telephone_number
   }
 }
 `;
@@ -52,10 +53,16 @@ const PatientSelect:React.FC<Props> = (props) => {
                 loading ?
                     <Text>Loading...</Text>
                     :
-
-                    data && data.myPatients.map((patient)=>(
-                        <PatientSelectCard patient={patient}/>
-                    ))
+                    <ScrollView style={styles.scrollView}>
+                        {
+                    data && data.my_patients.map((patient)=>(
+                        <PatientSelectCard
+                            patient={patient}
+                            setSelectPatient={props.setSelectPatient}
+                            setPatient = {props.setPatient}
+                        />
+                    ))}
+                    </ScrollView>
 
             }
         </View>
@@ -63,3 +70,10 @@ const PatientSelect:React.FC<Props> = (props) => {
 };
 
 export default PatientSelect;
+
+const styles = StyleSheet.create({
+    scrollView:{
+        marginTop:20,
+        marginBottom:120
+    }
+})

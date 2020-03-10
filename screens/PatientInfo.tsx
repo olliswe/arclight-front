@@ -10,12 +10,12 @@ import {NavigationFocusInjectedProps} from "react-navigation";
 
 const QUERY_PATIENTS = gql`
     query{
-      myPatients{
-        fullName,
+      my_patients{
+        full_name,
         gender,
         id,
         dob,
-        telephoneNumber,
+        telephone_number,
         age
         }
     }
@@ -42,7 +42,7 @@ const PatientInfo:React.FC<Props> = (props) => {
                 Loading...
             </Text>
             :
-                ( data?.myPatients.map((patient)=>(
+                ( data?.my_patients.map((patient)=>(
                         <PatientCard patient={patient}/>
                     ))
                 )

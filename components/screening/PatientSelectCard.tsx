@@ -2,20 +2,23 @@ import React from 'react';
 import {Card, Left, Body, Right, Text, CardItem, Grid, Col, Button} from 'native-base'
 import {Ionicons} from '@expo/vector-icons'
 import {PatientData} from "../../types";
+import {StyleSheet} from "react-native";
 
 interface Props {
-    patient:PatientData
+    patient:PatientData,
+    setSelectPatient:React.Dispatch<React.SetStateAction<boolean>>,
+    setPatient:React.Dispatch<React.SetStateAction<PatientData|null>>,
 }
 
 const PatientSelectCard:React.FC<Props> = (props) => {
     return (
         <Card>
             <CardItem>
-                <Body style={{flex:3, marginTop:5}}>
+                <Body style={styles.body}>
                     <Grid>
                         <Col size={7}>
                             <Text>
-                                {props.patient.fullName}
+                                {props.patient.full_name}
                             </Text>
                             <Text>
                                 ID: {props.patient.id}
@@ -31,11 +34,15 @@ const PatientSelectCard:React.FC<Props> = (props) => {
                         </Col>
                     </Grid>
                 </Body>
-                <Right style={{flex:1}}>
-                    <Button>
-                        <Text>
-                            Select
-                        </Text>
+                <Right style={styles.right}>
+                    <Button
+                    style={styles.button}
+                    onPress={()=>{
+                        props.setPatient(props.patient)
+                        props.setSelectPatient(false)
+                    }}
+                    >
+                        <Ionicons name={"md-checkmark"} size={30} color='white'/>
                     </Button>
                 </Right>
             </CardItem>
@@ -44,3 +51,9 @@ const PatientSelectCard:React.FC<Props> = (props) => {
 };
 
 export default PatientSelectCard;
+
+const styles = StyleSheet.create({
+    button:{width:40, justifyContent:'center'},
+    body:{flex:3, marginTop:5},
+    right:{flex:1}
+})

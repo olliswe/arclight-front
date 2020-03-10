@@ -23,18 +23,18 @@ interface GQLDataBase {
 }
 
 export interface PatientData extends GQLDataBase   {
-    fullName:string,
+    full_name:string,
     id:string,
     gender?:string,
     dob?:string,
-    telephoneNumber?:string,
+    telephone_number?:string,
     age?:string
 }
 
 
 
 export interface PatientQueryObject {
-    myPatients:PatientData[]
+    my_patients:PatientData[]
 }
 
 export type StackNavigationProp = NavigationStackProp & NavigationInjectedProps
