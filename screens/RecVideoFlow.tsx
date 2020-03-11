@@ -1,5 +1,5 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
-import {Container, Text, Icon, Button, Spinner} from "native-base";
+import {Container, Text, Icon, Button, Spinner, Textarea} from "native-base";
 import {ProgressStep, ProgressSteps} from "react-native-progress-steps";
 import {View, Alert, StyleSheet} from "react-native";
 import {withNavigation} from "react-navigation";
@@ -44,8 +44,9 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
 
 
     const [patient, setPatient] = useState<PatientData|null>(null)
-    const [activeStep, setActiveStep] = useState<0|1|2>(0)
+    const [activeStep, setActiveStep] = useState<0|1|2|3>(0)
     const [showCamera, setShowCamera] = useState<boolean>(false)
+    const [comment, setComment] = useState<string>('')
     const [recordedVideo, setRecordedVideo] = useState<VideoFile>({
         uri:null,
         filename:null,
@@ -105,14 +106,15 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
             const data = new FormData();
             // @ts-ignore
             data.append("file",
-                JSON.stringify({
+                {
+                    // @ts-ignore - Request only works if object is passed
                     name: recordedVideo.filename,
                     type: "video/mp4",
                     uri: recordedVideo.uri
-                }), recordedVideo.filename
+                }
             );
             data.append("patient_id", patient.id);
-            console.log(data)
+            data.append("comment",comment);
 
             let headers = {'Authorization': 'Token ' + token, 'Content-Type': 'multipart/form-data'}
 
@@ -234,7 +236,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                         scrollViewProps={{scrollEnabled: false}}
                     >
                         {!!recordedVideo.uri ?
-                            <View style={{flexDirection: 'column', alignItems: 'center',}}>
+                            <View style={{flexDirection: 'column', alignItems: 'center'}}>
                                 <Text style={styles.topMargin}>
                                     Video was successfully recorded !
                                 </Text>
@@ -254,7 +256,7 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                 </Button>
                             </View>
                             :
-                            <View style={{alignItems: 'center'}}>
+                            <View style={{flexDirection: 'column', alignItems: 'center'}}>
                                 <Button onPress={_showCamera}>
                                     <Text>Start Recording
                                     </Text>
@@ -266,9 +268,30 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                         }
                     </ProgressStep>
                     <ProgressStep
+                    label="Comment"
+                    onNext={() => setActiveStep(3)}
+                    style={styles.topMargin}
+                    scrollViewProps={{scrollEnabled: false}}
+                    >
+                        <View style={{marginLeft:20, marginRight:20, marginTop:50}}>
+                            <Text>
+                                Please add comments to further describe the screening
+                            </Text>
+                            <View style={{marginTop:30}}>
+                                <Textarea
+                                    rowSpan={5}
+                                    bordered
+                                    placeholder="Add comment.."
+                                    underline={false}
+                                    onChangeText={(text)=>setComment(text)}
+                                    value={comment}
+                                />
+                            </View>
+                        </View>
+                    </ProgressStep>
+                    <ProgressStep
                         label="Review & Submit"
                         onSubmit={handleSubmit}
-                        scrollViewProps={{scrollEnabled: false}}
                     >
                         <View style={{alignItems: 'center', flexDirection: 'column'}}>
                             <View style={styles.topMargin}>
@@ -295,6 +318,14 @@ const RecVideoFlow:React.FC<StackNavigationProp> = (props) => {
                                         name="eye"
                                     />
                                 </Button>
+                            </View>
+                            <View style={styles.topMargin}>
+                                <Text style={styles.bold}>
+                                    Comment:
+                                </Text>
+                                <Text>
+                                    {comment}
+                                </Text>
                             </View>
                         </View>
                     </ProgressStep>

@@ -20,7 +20,7 @@ const AppHeader:React.FC<Props> = (props:Props) => {
                     </Button>
                 </Left>
                 <Body>
-                    <Title>Version 0.21</Title>
+                    <Title>Version 0.22</Title>
                 </Body>
                 <Right>
                 </Right>
