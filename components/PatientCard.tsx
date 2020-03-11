@@ -1,9 +1,13 @@
 import React from 'react';
 import {Card, Left, Body, Right, Text, CardItem, Grid, Col} from 'native-base'
 import {Ionicons} from '@expo/vector-icons'
+import {PatientData} from "../types";
 
+interface Props {
+    patient:PatientData
+}
 
-const PatientCard:React.FC = () => {
+const PatientCard:React.FC<Props> = (props) => {
     return (
         <Card>
             <CardItem>
@@ -14,18 +18,18 @@ const PatientCard:React.FC = () => {
                     <Grid>
                         <Col size={8}>
                             <Text>
-                                Vishwanath Iyer
+                                {props.patient.full_name}
                             </Text>
                             <Text>
-                                UID: 0400242
+                                ID: {props.patient.id}
                             </Text>
                         </Col>
                         <Col size={4}>
                             <Text>
-                                Male
+                                {props.patient.gender}
                             </Text>
                             <Text>
-                                63 yrs
+                                {props.patient.age} years
                             </Text>
                         </Col>
                     </Grid>

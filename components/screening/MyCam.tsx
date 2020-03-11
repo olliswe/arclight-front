@@ -5,7 +5,7 @@ import { TouchableOpacity, StyleSheet, Platform} from "react-native";
 import * as Permissions from 'expo-permissions'
 import {Container, Text} from "native-base";
 import {Ionicons} from '@expo/vector-icons'
-import {VideoFile} from "../screens/RecVideoFlow";
+import {VideoFile} from "../../screens/RecVideoFlow";
 
 const offSet:number = 150
 
