@@ -20,4 +20,4 @@ const RecVideoPage:React.FC<Props> = (props:Props) => {
     );
 };
 
-export default withHeader(RecVideoPage);
+export default RecVideoPage;

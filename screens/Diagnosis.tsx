@@ -1,16 +1,34 @@
-import React from 'react';
-import {View} from 'react-native'
-import {Text} from 'native-base'
-import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
+import React from "react";
+import { Tab, Tabs, Container } from "native-base";
+import ReviewedTab from "../components/diagnosis/ReviewedTab";
+import PendingTab from "../components/diagnosis/PendingTab";
+import ArchivedTab from "../components/diagnosis/ArchivedTab";
+import { NavigationFocusInjectedProps } from "react-navigation";
+import { withNavigationFocus } from "react-navigation";
+import { StyleSheet } from "react-native";
 
-const Diagnosis:React.FC = () => {
-    return (
-        <View>
-            <Text>
-                Diagnosis Page
-            </Text>
-        </View>
-    );
+interface Props extends NavigationFocusInjectedProps {}
+
+const Diagnosis: React.FC<Props> = (props) => {
+  return (
+    <Container>
+      <Tabs tabContainerStyle={styles.tabs}>
+        <Tab heading={"Reviewed"}>
+          <ReviewedTab {...props} />
+        </Tab>
+        <Tab heading={"Pending  "}>
+          <PendingTab {...props} />
+        </Tab>
+        <Tab heading={"Archived"}>
+          <ArchivedTab {...props} />
+        </Tab>
+      </Tabs>
+    </Container>
+  );
 };
 
-export default withHeader(Diagnosis);
+export default withNavigationFocus(Diagnosis);
+
+const styles = StyleSheet.create({
+  tabs: { height: 60, paddingTop: 15 },
+});
