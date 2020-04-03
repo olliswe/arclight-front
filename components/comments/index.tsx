@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Col, Content, Grid, Text } from "native-base";
-import { StyleSheet, View } from "react-native";
+import { Content, Grid, Text } from "native-base";
+import { StyleSheet } from "react-native";
 import DoctorComment from "./DoctorComment";
 import ScreenerComment from "./ScreenerComment";
 import { DoctorCommentData, ScreenerCommentData } from "../../types";

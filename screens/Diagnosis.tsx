@@ -1,33 +1,42 @@
 import React from "react";
-import { Tab, Tabs, Container } from "native-base";
+import { Container, Tab, Tabs } from "native-base";
 import ReviewedTab from "../components/diagnosis/ReviewedTab";
 import PendingTab from "../components/diagnosis/PendingTab";
 import ArchivedTab from "../components/diagnosis/ArchivedTab";
-import { NavigationFocusInjectedProps } from "react-navigation";
-import { withNavigationFocus } from "react-navigation";
 import { StyleSheet } from "react-native";
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { AuthNavigationParams } from "../navigation/AuthNavigation";
+import { RootStackParams } from "../App";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { AppParamList, BottomTabParamList } from "../navigation/AppNavigation";
 
-interface Props extends NavigationFocusInjectedProps {}
+export type DiagnosisNavigationProp = CompositeNavigationProp<
+  DrawerNavigationProp<BottomTabParamList, "Diagnosis">,
+  StackNavigationProp<AppParamList>
+>;
 
-const Diagnosis: React.FC<Props> = (props) => {
+const Diagnosis: React.FC<{ navigation: DiagnosisNavigationProp }> = ({
+  navigation,
+}) => {
   return (
     <Container>
       <Tabs tabContainerStyle={styles.tabs}>
         <Tab heading={"Reviewed"}>
-          <ReviewedTab {...props} />
+          <ReviewedTab />
         </Tab>
         <Tab heading={"Pending  "}>
-          <PendingTab {...props} />
+          <PendingTab />
         </Tab>
         <Tab heading={"Archived"}>
-          <ArchivedTab {...props} />
+          <ArchivedTab />
         </Tab>
       </Tabs>
     </Container>
   );
 };
 
-export default withNavigationFocus(Diagnosis);
+export default Diagnosis;
 
 const styles = StyleSheet.create({
   tabs: { height: 60, paddingTop: 15 },

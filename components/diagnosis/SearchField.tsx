@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Input, Item, Button, Spinner } from "native-base";
+import { Button, Icon, Input, Item, Spinner } from "native-base";
 import { StyleSheet } from "react-native";
 
 interface Props {

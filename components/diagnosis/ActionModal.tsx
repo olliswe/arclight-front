@@ -1,21 +1,24 @@
-import React, { Component, useState } from "react";
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Icon, Left, List, ListItem, Right } from "native-base";
+import React from "react";
+import { Alert, Dimensions, Modal, StyleSheet, View } from "react-native";
+import { Button, Icon, Left, List, ListItem, Right, Text } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { AddCommentScreenNavigationProp } from "../../screens/AddComment";
 
 interface Props {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  caseId: number;
 }
 
-const ActionModal: React.FC<Props> = ({ modalVisible, setModalVisible }) => {
+const screenWidth = Math.round(Dimensions.get("window").width);
+
+const ActionModal: React.FC<Props> = ({
+  modalVisible,
+  setModalVisible,
+  caseId,
+}) => {
+  const navigation = useNavigation<AddCommentScreenNavigationProp>();
+
   return (
     <Modal
       animationType="fade"
@@ -31,12 +34,15 @@ const ActionModal: React.FC<Props> = ({ modalVisible, setModalVisible }) => {
             <ListItem
               key={1}
               button={true}
-              onPress={() => null}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                setTimeout(() => null, 500);
+              }}
               style={styles.listItem}
             >
               <Left>
                 <Icon
-                  style={{ marginTop: 20, marginRight: 15 }}
+                  style={{ marginTop: 20, marginRight: 15, color: "green" }}
                   name="checkcircle"
                   type="AntDesign"
                 />
@@ -53,12 +59,18 @@ const ActionModal: React.FC<Props> = ({ modalVisible, setModalVisible }) => {
             <ListItem
               key={2}
               button={true}
-              onPress={() => null}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                setTimeout(
+                  () => navigation.navigate("AddComment", { id: caseId }),
+                  500
+                );
+              }}
               style={styles.listItem}
             >
               <Left>
                 <Icon
-                  style={{ marginTop: 20, marginRight: 15 }}
+                  style={{ marginTop: 20, marginRight: 15, color: "orange" }}
                   name="questioncircle"
                   type="AntDesign"
                 />
@@ -74,14 +86,16 @@ const ActionModal: React.FC<Props> = ({ modalVisible, setModalVisible }) => {
             </ListItem>
           </List>
 
-          <TouchableHighlight
-            style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+          <Button
             onPress={() => {
               setModalVisible(!modalVisible);
             }}
+            bordered
+            warning
+            block
           >
-            <Text style={styles.textStyle}>Hide Modal</Text>
-          </TouchableHighlight>
+            <Text>Cancel</Text>
+          </Button>
         </View>
       </View>
     </Modal>
@@ -110,12 +124,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     padding: 10,
   },
-  openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
   textStyle: {
     color: "white",
     fontWeight: "bold",
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   list: {
-    width: 350,
+    width: screenWidth - 50,
   },
   listItem: {
     marginTop: 10,

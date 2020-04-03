@@ -1,23 +1,27 @@
-import React, { useEffect, useRef, useState, Fragment } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
-  Content,
-  Header,
-  Left,
-  Button,
-  Icon,
   Body,
-  Title,
-  Container,
-  Grid,
+  Button,
   Col,
-  Text,
+  Container,
+  Content,
+  Grid,
+  Header,
+  Icon,
+  Left,
   Right,
+  Text,
+  Title,
 } from "native-base";
-import { withNavigation } from "react-navigation";
 import {
   DoctorCommentData,
   ScreenerCommentData,
-  StackNavigationProp,
   VideoUploadData,
   VideoUploadQueryObject,
 } from "../types";
@@ -25,14 +29,15 @@ import PageLoading from "../components/loadingSpinners/PageLoading";
 import { useApolloClient } from "@apollo/react-hooks";
 import { orderComments } from "../utils";
 import { gql } from "apollo-boost";
-import { StyleSheet, Modal, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Video } from "expo-av";
 import Comments from "../components/comments";
 import Divider from "../components/Divider";
 import ActionModal from "../components/diagnosis/ActionModal";
 import { BlurView } from "expo-blur";
-
-interface Props extends StackNavigationProp {}
+import { StackNavigationProp } from "@react-navigation/stack";
+import { AppParamList } from "../navigation/AppNavigation";
+import { RouteProp, useFocusEffect } from "@react-navigation/native";
 
 const QUERY_CASE = gql`
   query video_upload($id: String) {
@@ -72,13 +77,25 @@ const QUERY_CASE = gql`
   }
 `;
 
-const ViewCase: React.FC<Props> = ({ navigation }) => {
+type ViewCaseScreenNavigationProp = StackNavigationProp<
+  AppParamList,
+  "ViewCase"
+>;
+
+type ViewCaseRouteProp = RouteProp<AppParamList, "ViewCase">;
+
+const ViewCase: React.FC<{
+  navigation: ViewCaseScreenNavigationProp;
+  route: ViewCaseRouteProp;
+}> = ({ navigation, route }) => {
   const [record, setRecord] = useState<VideoUploadData | null>(null);
   const [comments, setComments] = useState<
     (DoctorCommentData | ScreenerCommentData)[]
   >([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const { id } = route.params;
 
   const client = useApolloClient();
 
@@ -95,7 +112,7 @@ const ViewCase: React.FC<Props> = ({ navigation }) => {
     client
       .query<VideoUploadQueryObject>({
         query: QUERY_CASE,
-        variables: { id: navigation.getParam("id", "") },
+        variables: { id: id },
         fetchPolicy: "network-only",
       })
       .then((res) => {
@@ -113,9 +130,11 @@ const ViewCase: React.FC<Props> = ({ navigation }) => {
       });
   };
 
-  useEffect(() => {
-    getCaseData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getCaseData();
+    }, [])
+  );
 
   return (
     <Fragment>
@@ -145,7 +164,7 @@ const ViewCase: React.FC<Props> = ({ navigation }) => {
             </Button>
           </Left>
           <Body>
-            <Title>Case ID: {navigation.getParam("id", "")}</Title>
+            <Title>Case ID: {id}</Title>
           </Body>
           <Right />
         </Header>
@@ -232,12 +251,13 @@ const ViewCase: React.FC<Props> = ({ navigation }) => {
       <ActionModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        caseId={id}
       />
     </Fragment>
   );
 };
 
-export default withNavigation(ViewCase);
+export default ViewCase;
 
 const styles = StyleSheet.create({
   boldText: {

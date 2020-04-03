@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Content, Text } from "native-base";
 import SearchField from "./SearchField";
 import { useApolloClient } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import { View } from "react-native";
-import { NavigationFocusInjectedProps } from "react-navigation";
+import { StyleSheet, View } from "react-native";
 import { VideoUploadData, VideoUploadsQueryObject } from "../../types";
 import * as Progress from "react-native-progress";
-import { StyleSheet } from "react-native";
 import CaseCard from "../CaseCard";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { DiagnosisNavigationProp } from "../../screens/Diagnosis";
 
 const QUERY_REVIEWED_CASES = gql`
   query my_video_uploads($patient__full_name: String) {
@@ -36,9 +36,7 @@ const QUERY_REVIEWED_CASES = gql`
   }
 `;
 
-interface Props extends NavigationFocusInjectedProps {}
-
-const ReviewedTab: React.FC<Props> = (props) => {
+const ReviewedTab: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<VideoUploadData[] | null>(null);
@@ -62,9 +60,11 @@ const ReviewedTab: React.FC<Props> = (props) => {
       });
   };
 
-  useEffect(() => {
-    props.isFocused && getCaseData();
-  }, [props.isFocused]);
+  useFocusEffect(
+    useCallback(() => {
+      getCaseData();
+    }, [])
+  );
 
   return (
     <Content padder>

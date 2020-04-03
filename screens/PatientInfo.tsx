@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { Text, Content } from "native-base";
-import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
+import React, { useCallback, useEffect } from "react";
+import { Content } from "native-base";
 import PatientCard from "../components/PatientCard";
 import { useQuery } from "react-apollo";
 import { gql } from "apollo-boost";
-import { PatientQueryObject, StackNavigationProp } from "../types";
-import { NavigationFocusInjectedProps } from "react-navigation";
-import { withNavigationFocus } from "react-navigation";
+import { PatientQueryObject } from "../types";
 import PageLoading from "../components/loadingSpinners/PageLoading";
+import { BottomTabParamList } from "../navigation/AppNavigation";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { useFocusEffect } from "@react-navigation/native";
 
 const QUERY_PATIENTS = gql`
   query {
@@ -22,12 +22,20 @@ const QUERY_PATIENTS = gql`
   }
 `;
 
-interface Props extends NavigationFocusInjectedProps {}
+type PatientInfoScreenNavigationProp = BottomTabNavigationProp<
+  BottomTabParamList,
+  "Patients"
+>;
 
-const PatientInfo: React.FC<Props> = (props) => {
-  useEffect(() => {
-    props.isFocused && refetch();
-  }, [props.isFocused]);
+const PatientInfo: React.FC<{
+  navigation: PatientInfoScreenNavigationProp;
+}> = ({ navigation }) => {
+  useFocusEffect(
+    useCallback(() => {
+      console.log("fetch");
+      refetch();
+    }, [])
+  );
 
   const { data, loading, refetch } = useQuery<PatientQueryObject>(
     QUERY_PATIENTS,
@@ -45,4 +53,4 @@ const PatientInfo: React.FC<Props> = (props) => {
   );
 };
 
-export default withNavigationFocus(PatientInfo);
+export default PatientInfo;

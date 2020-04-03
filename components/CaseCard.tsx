@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  Card,
-  Left,
-  Body,
-  Right,
-  Text,
-  CardItem,
-  Grid,
-  Col,
-} from "native-base";
+import { Body, Card, CardItem, Col, Grid, Text } from "native-base";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { withNavigation } from "react-navigation";
-import { StackNavigationProp } from "../types";
+import { useNavigation } from "@react-navigation/native";
+import { DiagnosisNavigationProp } from "../screens/Diagnosis";
 
 interface Props {
   id: number;
@@ -19,14 +10,14 @@ interface Props {
   physicianName: string;
   lastCommentDate: string;
   recorededDate: string;
-  navigation: StackNavigationProp;
 }
 
 const CaseCard: React.FC<Props> = (props) => {
+  const navigation = useNavigation<DiagnosisNavigationProp>();
   return (
     <TouchableOpacity
       onPress={() => {
-        props.navigation.navigate("ViewCase", { id: props.id });
+        navigation.navigate("ViewCase", { id: props.id });
       }}
     >
       <Card>
@@ -73,7 +64,7 @@ const CaseCard: React.FC<Props> = (props) => {
   );
 };
 
-export default withNavigation(CaseCard);
+export default CaseCard;
 
 const styles = StyleSheet.create({
   margin: {

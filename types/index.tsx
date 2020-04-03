@@ -1,8 +1,3 @@
-import { NavigationStackProp } from "react-navigation-stack";
-import { NavigationInjectedProps } from "react-navigation";
-import { NavigationDrawerProp } from "react-navigation-drawer";
-import { NavigationTabProp } from "react-navigation-tabs";
-
 export interface Facility {
   id: number;
   facility_name: string;
@@ -31,13 +26,6 @@ export interface PatientData extends GQLDataBase {
 export interface PatientQueryObject {
   my_patients: PatientData[];
 }
-
-export type StackNavigationProp = NavigationStackProp & NavigationInjectedProps;
-
-export type DrawerNavigationProp = NavigationDrawerProp &
-  NavigationInjectedProps;
-
-export type TabNavigationProp = NavigationTabProp & NavigationInjectedProps;
 
 export interface VideoUploadData {
   id: number;

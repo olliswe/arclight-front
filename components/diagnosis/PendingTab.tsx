@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Content, Item, Icon, Input } from "native-base";
+import React, { useState } from "react";
+import { Content } from "native-base";
 import SearchField from "./SearchField";
-import { gql } from "apollo-boost";
-import { NavigationFocusInjectedProps } from "react-navigation";
 
-interface Props extends NavigationFocusInjectedProps {}
-
-const PendingTab: React.FC<Props> = (props) => {
+const PendingTab: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  return (
-    <Content padder>
-      <SearchField setSearchTerm={setSearchTerm} />
-    </Content>
-  );
+  return <Content padder></Content>;
 };
 
 export default PendingTab;
