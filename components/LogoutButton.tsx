@@ -1,31 +1,31 @@
-import React, {useContext, useEffect} from 'react';
-import {Text, Button} from 'native-base'
-import {UserContext} from "../context/userContext";
-import {withNavigation} from 'react-navigation'
-import {NavigationInjectedProps} from "react-navigation";
+import React, { useContext, useState } from "react";
+import { Button, Spinner, Text } from "native-base";
+import { UserContext } from "../context/userContext";
 
-const LogoutButton:React.FC<NavigationInjectedProps> = (props:NavigationInjectedProps) => {
+const LogoutButton: React.FC = () => {
+  let userContext = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
-    let userContext = useContext(UserContext)
+  const handleLogout = () => {
+    setLoading(true);
+    userContext.dispatch({ type: "logout" });
+  };
 
-    useEffect(()=>{
-        if (!userContext.state.isAuthenticated){
-            props.navigation.navigate('Auth')
-        }
-
-    },[userContext.state.isAuthenticated])
-
-    const handleLogout = () => {
-        userContext.dispatch({type:'logout'})
-    }
-
-    return (
-        <Button onPress={handleLogout} bordered danger style={{justifyContent:'center'}}>
-            <Text style={{color:'red'}}>
-                Logout
-            </Text>
-        </Button>
-    );
+  return (
+    <Button
+      onPress={handleLogout}
+      bordered
+      danger
+      style={{ justifyContent: "center" }}
+      disabled={loading}
+    >
+      {loading ? (
+        <Spinner size="small" />
+      ) : (
+        <Text style={{ color: "red" }}>Logout</Text>
+      )}
+    </Button>
+  );
 };
 
-export default withNavigation(LogoutButton);
+export default LogoutButton;

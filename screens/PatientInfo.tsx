@@ -1,54 +1,56 @@
-import React,{useEffect} from 'react';
-import {Text, Content} from 'native-base'
-import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
+import React, { useCallback } from "react";
+import { Content } from "native-base";
 import PatientCard from "../components/PatientCard";
-import { useQuery } from 'react-apollo';
-import { gql } from 'apollo-boost';
-import {PatientQueryObject, StackNavigationProp} from "../types";
-import {NavigationFocusInjectedProps} from "react-navigation";
-
+import { useQuery } from "react-apollo";
+import { gql } from "apollo-boost";
+import { PatientQueryObject } from "../types";
+import PageLoading from "../components/loadingSpinners/PageLoading";
+import { BottomTabParamList } from "../navigation/AppNavigation";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { useFocusEffect } from "@react-navigation/native";
 
 const QUERY_PATIENTS = gql`
-    query{
-      my_patients{
-        full_name,
-        gender,
-        id,
-        dob,
-        telephone_number,
-        age
-        }
+  query {
+    my_patients {
+      full_name
+      gender
+      id
+      dob
+      telephone_number
+      age
     }
+  }
 `;
 
+type PatientInfoScreenNavigationProp = BottomTabNavigationProp<
+  BottomTabParamList,
+  "Patients"
+>;
 
-interface Props extends NavigationFocusInjectedProps {}
+const PatientInfo: React.FC<{
+  navigation: PatientInfoScreenNavigationProp;
+}> = ({ navigation }) => {
+  useFocusEffect(
+    useCallback(() => {
+      console.log("fetch");
+      refetch();
+    }, [])
+  );
 
-const PatientInfo:React.FC<Props> = (props) => {
+  const { data, loading, refetch } = useQuery<PatientQueryObject>(
+    QUERY_PATIENTS,
+    { fetchPolicy: "network-only" }
+  );
 
-    useEffect(()=> {
-        props.isFocused && refetch()
-        }
-        ,[props.isFocused])
-
-
-    const { data, loading, refetch } = useQuery<PatientQueryObject>(QUERY_PATIENTS,
-        {fetchPolicy:'network-only'});
-
-    return (
-        <Content padder>
-            {loading ?
-            <Text>
-                Loading...
-            </Text>
-            :
-                ( data?.my_patients.map((patient)=>(
-                        <PatientCard patient={patient}/>
-                    ))
-                )
-            }
-        </Content>
-    );
+  return loading ? (
+    <PageLoading />
+  ) : (
+    <Content padder>
+      {data?.my_patients.map((patient) => (
+        <PatientCard patient={patient} />
+      ))}
+    </Content>
+  );
 };
 
-export default withHeader(PatientInfo);
+export default PatientInfo;
