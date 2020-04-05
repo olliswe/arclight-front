@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Content } from "native-base";
 import PatientCard from "../components/PatientCard";
 import { useQuery } from "react-apollo";

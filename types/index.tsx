@@ -34,7 +34,7 @@ export interface VideoUploadData {
   patient: PatientData;
   comment: string;
   doctor_status: "NEW" | "REOPENED" | "ARCHIVED";
-  screener_status: "PENDING_INITIAL_REVIEW" | "REVIEWED" | "ARCHIVED";
+  screener_status: "PENDING_REVIEW" | "REVIEWED" | "ARCHIVED";
   doctor_comments: DoctorCommentData[];
   screener_comments: ScreenerCommentData[];
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Tab, Tabs } from "native-base";
 import ReviewedTab from "../components/diagnosis/ReviewedTab";
 import PendingTab from "../components/diagnosis/PendingTab";
@@ -6,8 +6,6 @@ import ArchivedTab from "../components/diagnosis/ArchivedTab";
 import { StyleSheet } from "react-native";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthNavigationParams } from "../navigation/AuthNavigation";
-import { RootStackParams } from "../App";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { AppParamList, BottomTabParamList } from "../navigation/AppNavigation";
 
@@ -19,17 +17,24 @@ export type DiagnosisNavigationProp = CompositeNavigationProp<
 const Diagnosis: React.FC<{ navigation: DiagnosisNavigationProp }> = ({
   navigation,
 }) => {
+  const [tabChangeCounter, setTabChangeCounter] = useState<number>(0);
+
   return (
     <Container>
-      <Tabs tabContainerStyle={styles.tabs}>
+      <Tabs
+        tabContainerStyle={styles.tabs}
+        onChangeTab={() =>
+          setTabChangeCounter((tabChangeCounter) => tabChangeCounter + 1)
+        }
+      >
         <Tab heading={"Reviewed"}>
-          <ReviewedTab />
+          <ReviewedTab counter={tabChangeCounter} />
         </Tab>
         <Tab heading={"Pending  "}>
-          <PendingTab />
+          <PendingTab counter={tabChangeCounter} />
         </Tab>
         <Tab heading={"Archived"}>
-          <ArchivedTab />
+          <ArchivedTab counter={tabChangeCounter} />
         </Tab>
       </Tabs>
     </Container>

@@ -1,9 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Spinner, Text } from "native-base";
 import { UserContext } from "../context/userContext";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParams } from "../App";
-import { useNavigation } from "@react-navigation/native";
 
 const LogoutButton: React.FC = () => {
   let userContext = useContext(UserContext);

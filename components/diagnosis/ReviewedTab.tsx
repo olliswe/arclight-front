@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Content, Text } from "native-base";
 import SearchField from "./SearchField";
 import { useApolloClient } from "@apollo/react-hooks";
@@ -7,8 +7,7 @@ import { StyleSheet, View } from "react-native";
 import { VideoUploadData, VideoUploadsQueryObject } from "../../types";
 import * as Progress from "react-native-progress";
 import CaseCard from "../CaseCard";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { DiagnosisNavigationProp } from "../../screens/Diagnosis";
+import { useFocusEffect } from "@react-navigation/native";
 
 const QUERY_REVIEWED_CASES = gql`
   query my_video_uploads($patient__full_name: String) {
@@ -36,7 +35,7 @@ const QUERY_REVIEWED_CASES = gql`
   }
 `;
 
-const ReviewedTab: React.FC = () => {
+const ReviewedTab: React.FC<{ counter: number }> = ({ counter }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<VideoUploadData[] | null>(null);
@@ -48,7 +47,7 @@ const ReviewedTab: React.FC = () => {
       .query<VideoUploadsQueryObject>({
         query: QUERY_REVIEWED_CASES,
         variables: { patient__full_name: searchTerm },
-        fetchPolicy: "network-only",
+        fetchPolicy: "no-cache",
       })
       .then((res) => {
         setCaseData(res.data.my_video_uploads);
@@ -63,7 +62,7 @@ const ReviewedTab: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       getCaseData();
-    }, [])
+    }, [counter])
   );
 
   return (
@@ -89,9 +88,14 @@ const ReviewedTab: React.FC = () => {
             <CaseCard
               id={item.id}
               lastCommentDate={item.doctor_comments[0].date_added}
-              physicianName={item.doctor_comments[0].physician.email}
+              physicianName={
+                item.doctor_comments.length > 0 &&
+                item.doctor_comments[0].physician.email
+              }
               patientName={item.patient.full_name}
               recorededDate={item.date_recorded.slice(0, 10)}
+              loading={loading}
+              status="REVIEWED"
             />
           </View>
         ))}

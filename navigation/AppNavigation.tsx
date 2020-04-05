@@ -3,9 +3,9 @@ import {
   StackNavigationProp,
 } from "@react-navigation/stack";
 import {
-  createBottomTabNavigator,
   BottomTabBar,
   BottomTabBarProps,
+  createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RecVideoPage from "../screens/RecVideoPage";
@@ -21,7 +21,6 @@ import About from "../screens/About";
 import Help from "../screens/Help";
 import DrawerContent from "../components/DrawerContent";
 import ViewCase from "../screens/ViewCase";
-import {} from "@react-navigation/native";
 import AddComment from "../screens/AddComment";
 
 // Navigator for the Home Screen, where video is recorded
@@ -69,6 +68,7 @@ export type BottomTabParamList = {
 
 const MainBottomTab = createBottomTabNavigator<BottomTabParamList>();
 
+// todo: Make RecVideo sit in the top level stack navigator, such that it cannot access the Drawer and Bottom Tab
 function getTabBarVisibility(route: any) {
   const routeName = route.state
     ? route.state.routes[route.state.index].name

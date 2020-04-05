@@ -2,31 +2,31 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, CardItem, Content, Text } from "native-base";
 import Divider from "../Divider";
+import { ScreenerCommentData } from "../../types";
 
-const ScreenerComment: React.FC = () => {
+interface Props {
+  comment: ScreenerCommentData;
+}
+
+const ScreenerComment: React.FC<{ comment: ScreenerCommentData }> = ({
+  comment,
+}) => {
   return (
     <View style={{ flexDirection: "row", display: "flex", flex: 1 }}>
       <View style={styles.spacer} />
       <Card style={[styles.card, styles.corner]}>
         <CardItem style={[styles.corner]}>
           <Content>
-            <Text style={styles.headerText}>Oliver Iyer (Screener)</Text>
-            <Divider style={styles.divider} />
-            <Text style={styles.divider}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+            <Text style={styles.headerText}>
+              {comment.screener.email} (Screener)
             </Text>
             <Divider style={styles.divider} />
+            <Text style={styles.divider}>{comment.comment}</Text>
+            <Divider style={styles.divider} />
             <View style={styles.daterow}>
-              <Text style={styles.dateText}>2020-03-24</Text>
+              <Text style={styles.dateText}>
+                {comment.date_added.slice(0, 10)}
+              </Text>
             </View>
           </Content>
         </CardItem>

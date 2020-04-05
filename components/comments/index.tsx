@@ -16,11 +16,16 @@ const Comments: React.FC<Props> = (props) => {
         <Text style={styles.header}>Discussion</Text>
       </Grid>
       <Content>
-        {props.comments.length > 0 &&
+        {props.comments.length > 0 ? (
           props.comments.map((item) => {
             if (item.type === "doctor") return <DoctorComment comment={item} />;
-            else return <ScreenerComment />;
-          })}
+            else return <ScreenerComment comment={item} />;
+          })
+        ) : (
+          <Grid style={styles.row}>
+            <Text>No comments have been submitted yet...</Text>
+          </Grid>
+        )}
       </Content>
     </Content>
   );

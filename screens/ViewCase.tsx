@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useCallback, useRef, useState } from "react";
 import {
   Body,
   Button,
@@ -83,6 +77,12 @@ type ViewCaseScreenNavigationProp = StackNavigationProp<
 >;
 
 type ViewCaseRouteProp = RouteProp<AppParamList, "ViewCase">;
+
+const getStatusText = (status: "PENDING_REVIEW" | "REVIEWED" | "ARCHIVED") => {
+  if (status === "PENDING_REVIEW") return "Pending Review";
+  else if (status === "REVIEWED") return "Reviewed, awaiting your action";
+  else if (status === "ARCHIVED") return "Archived";
+};
 
 const ViewCase: React.FC<{
   navigation: ViewCaseScreenNavigationProp;
@@ -178,7 +178,7 @@ const ViewCase: React.FC<{
                   <Text style={styles.boldText}>Status:</Text>
                 </Col>
                 <Col size={6}>
-                  <Text>{record.screener_status}</Text>
+                  <Text>{getStatusText(record.screener_status)}</Text>
                 </Col>
               </Grid>
               <Grid style={styles.grid}>
@@ -233,9 +233,16 @@ const ViewCase: React.FC<{
                 block
                 style={styles.blockButton}
                 onPress={() => setModalVisible(true)}
+                disabled={record.screener_status === "PENDING_REVIEW"}
               >
                 <Text>Take Action</Text>
               </Button>
+              {record.screener_status === "PENDING_REVIEW" && (
+                <Text style={styles.helpText}>
+                  You cannot perform an action while the case is pending
+                  review...
+                </Text>
+              )}
             </Content>
             <Video
               ref={videoRef}
@@ -248,11 +255,16 @@ const ViewCase: React.FC<{
           </Content>
         )}
       </Container>
-      <ActionModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        caseId={id}
-      />
+      {record && (
+        <ActionModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          caseId={id}
+          setLoading={setLoading}
+          setRecord={setRecord}
+          status={record.screener_status}
+        />
+      )}
     </Fragment>
   );
 };
@@ -277,5 +289,10 @@ const styles = StyleSheet.create({
   },
   blockButton: {
     marginTop: 20,
+  },
+  helpText: {
+    textAlign: "center",
+    fontSize: 14,
+    marginTop: 3,
   },
 });

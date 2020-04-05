@@ -7,10 +7,18 @@ import { DiagnosisNavigationProp } from "../screens/Diagnosis";
 interface Props {
   id: number;
   patientName: string;
-  physicianName: string;
-  lastCommentDate: string;
+  physicianName: string | boolean;
+  lastCommentDate: string | boolean;
   recorededDate: string;
+  loading: boolean;
+  status: "REVIEWED" | "PENDING_REVIEW" | "ARCHIVED";
 }
+
+const getStyle = (status: "REVIEWED" | "PENDING_REVIEW" | "ARCHIVED") => {
+  if (status === "REVIEWED") return styles.greenBackground;
+  else if (status === "PENDING_REVIEW") return styles.orangeBackground;
+  else if (status === "ARCHIVED") return styles.grayBackground;
+};
 
 const CaseCard: React.FC<Props> = (props) => {
   const navigation = useNavigation<DiagnosisNavigationProp>();
@@ -19,9 +27,14 @@ const CaseCard: React.FC<Props> = (props) => {
       onPress={() => {
         navigation.navigate("ViewCase", { id: props.id });
       }}
+      disabled={props.loading}
     >
       <Card>
-        <CardItem style={styles.greenBackground}>
+        <CardItem
+          style={
+            props.loading ? styles.disabledBackground : getStyle(props.status)
+          }
+        >
           <Body style={{ flex: 1 }}>
             <Grid style={styles.margin}>
               <Col size={6}>
@@ -41,22 +54,30 @@ const CaseCard: React.FC<Props> = (props) => {
             </Grid>
             <Grid style={styles.margin}>
               <Col size={6}>
-                <Text>Latest comment from:</Text>
-              </Col>
-              <Col size={6}>
-                <Text style={[styles.italic]}>
-                  {props.physicianName}, 5 days ago
-                </Text>
-              </Col>
-            </Grid>
-            <Grid style={styles.margin}>
-              <Col size={6}>
                 <Text>Recorded on:</Text>
               </Col>
               <Col size={6}>
                 <Text style={[styles.italic]}>{props.recorededDate}</Text>
               </Col>
             </Grid>
+            {props.physicianName && props.lastCommentDate ? (
+              <Grid style={styles.margin}>
+                <Col size={6}>
+                  <Text>Latest comment from:</Text>
+                </Col>
+                <Col size={6}>
+                  <Text style={[styles.italic]}>
+                    {props.physicianName}, 5 days ago
+                  </Text>
+                </Col>
+              </Grid>
+            ) : (
+              <Grid style={styles.margin}>
+                <Col size={12}>
+                  <Text>No comments yet</Text>
+                </Col>
+              </Grid>
+            )}
           </Body>
         </CardItem>
       </Card>
@@ -75,5 +96,14 @@ const styles = StyleSheet.create({
   },
   greenBackground: {
     backgroundColor: "#dcfade",
+  },
+  disabledBackground: {
+    backgroundColor: "#e6e6e6",
+  },
+  orangeBackground: {
+    backgroundColor: "#ffd480",
+  },
+  grayBackground: {
+    backgroundColor: "lightgray",
   },
 });
