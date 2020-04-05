@@ -66,15 +66,13 @@ const CaseCard: React.FC<Props> = (props) => {
                   <Text>Latest comment from:</Text>
                 </Col>
                 <Col size={6}>
-                  <Text style={[styles.italic]}>
-                    {props.physicianName}, 5 days ago
-                  </Text>
+                  <Text style={[styles.italic]}>{props.physicianName}</Text>
                 </Col>
               </Grid>
             ) : (
               <Grid style={styles.margin}>
                 <Col size={12}>
-                  <Text>No comments yet</Text>
+                  <Text>No comments from physician yet</Text>
                 </Col>
               </Grid>
             )}
