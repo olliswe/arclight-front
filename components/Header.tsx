@@ -15,7 +15,7 @@ const AppHeader: React.FC = () => {
         </Button>
       </Left>
       <Body>
-        <Title>Version 0.22</Title>
+        <Title>Version 0.3</Title>
       </Body>
       <Right></Right>
     </Header>
