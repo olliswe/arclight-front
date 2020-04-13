@@ -23,7 +23,7 @@ import PageLoading from "../components/loadingSpinners/PageLoading";
 import { useApolloClient } from "@apollo/react-hooks";
 import { orderComments } from "../utils";
 import { gql } from "apollo-boost";
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Video } from "expo-av";
 import Comments from "../components/comments";
 import Divider from "../components/Divider";
@@ -38,6 +38,7 @@ const QUERY_CASE = gql`
     video_upload(video_upload_id: $id) {
       id
       signed_url
+      signed_signature_url
       date_recorded
       patient {
         id
@@ -219,6 +220,17 @@ const ViewCase: React.FC<{
                 </Col>
                 <Col size={6}>
                   <Text>{record.comment}</Text>
+                </Col>
+              </Grid>
+              <Grid style={styles.grid}>
+                <Col size={6}>
+                  <Text style={styles.boldText}>Signature:</Text>
+                </Col>
+                <Col size={6}>
+                  <Image
+                    source={{ uri: record.signed_signature_url }}
+                    style={{ height: 40, resizeMode: "contain" }}
+                  />
                 </Col>
               </Grid>
               <Button
