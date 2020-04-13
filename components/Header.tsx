@@ -1,33 +1,25 @@
-import React, {useRef} from 'react';
-import {Header, Left, Button, Icon, Body, Title, Right, View} from "native-base";
-import {StyleSheet} from "react-native";
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import {NavigationDrawerProp} from "react-navigation-drawer";
-import {NavigationInjectedProps} from "react-navigation";
+import React from "react";
+import { Body, Button, Header, Icon, Left, Right, Title } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { DrawerParamList } from "../navigation/AppNavigation";
 
+const AppHeader: React.FC = () => {
+  const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
 
-type Props = {
-    openDrawer:NavigationDrawerProp["openDrawer"]
-}
-
-const AppHeader:React.FC<Props> = (props:Props) => {
-
-    return (
-            <Header>
-                <Left>
-                    <Button transparent onPress={props.openDrawer}>
-                        <Icon name='menu' />
-                    </Button>
-                </Left>
-                <Body>
-                    <Title>Version 0.22</Title>
-                </Body>
-                <Right>
-                </Right>
-            </Header>
-    );
+  return (
+    <Header>
+      <Left>
+        <Button transparent onPress={navigation.openDrawer}>
+          <Icon name="menu" />
+        </Button>
+      </Left>
+      <Body>
+        <Title>Version 0.3</Title>
+      </Body>
+      <Right></Right>
+    </Header>
+  );
 };
-
-
 
 export default AppHeader;
