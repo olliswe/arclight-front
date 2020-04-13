@@ -14,6 +14,7 @@ import PatientSelectForm from "../components/screening/PatientSelectForm";
 import PatientRecord from "../components/screening/PatientRecord";
 import { ScreeningStackParamList } from "../navigation/AppNavigation";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Signature from "../components/screening/Signature";
 
 export interface VideoFile {
   uri: string | null | undefined;
@@ -53,6 +54,7 @@ const RecVideoFlow: React.FC<{
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [selectPatient, setSelectPatient] = useState<boolean>(false);
+  const [showSignature, setShowSignature] = useState<boolean>(false);
 
   let videoRef = useRef<Video>(null);
 
@@ -96,19 +98,26 @@ const RecVideoFlow: React.FC<{
     _showCamera();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (uri: string) => {
     if (patient && recordedVideo.filename) {
       setLoading(true);
       const data = new FormData();
       // @ts-ignore
       data.append("file", {
         // @ts-ignore - Request only works if object is passed
-        name: recordedVideo.filename,
+        name: "recording",
         type: "video/mp4",
         uri: recordedVideo.uri,
       });
       data.append("patient_id", patient.id);
       data.append("comment", comment);
+      data.append("signature", {
+        // @ts-ignore - Request only works if object is passed
+        name: "signature.jpeg",
+        type: "image/jpeg",
+        uri: uri,
+      });
+      console.log(uri);
 
       let headers = {
         Authorization: "Token " + token,
@@ -193,15 +202,28 @@ const RecVideoFlow: React.FC<{
           right: 0,
           top: 20,
           bottom: 0,
+          zIndex: 1000,
+          width: 30,
+          height: 30,
         }}
         onPress={handleCancel}
       />
-      <Container style={{ marginTop: 50 }}>
-        {selectPatient ? (
-          <PatientSelectForm
-            setSelectPatient={setSelectPatient}
-            setPatient={setPatient}
-          />
+      <Container style={!showSignature ? { marginTop: 50 } : { marginTop: 30 }}>
+        {selectPatient || showSignature ? (
+          <React.Fragment>
+            {selectPatient && (
+              <PatientSelectForm
+                setSelectPatient={setSelectPatient}
+                setPatient={setPatient}
+              />
+            )}
+            {showSignature && (
+              <Signature
+                handleSubmit={handleSubmit}
+                setShowSignature={setShowSignature}
+              />
+            )}
+          </React.Fragment>
         ) : (
           <ProgressSteps {...progressStepsStyle} activeStep={activeStep}>
             <ProgressStep
@@ -274,7 +296,10 @@ const RecVideoFlow: React.FC<{
                 </View>
               </View>
             </ProgressStep>
-            <ProgressStep label="Review & Submit" onSubmit={handleSubmit}>
+            <ProgressStep
+              label="Review & Submit"
+              onSubmit={() => setShowSignature(true)}
+            >
               <View style={{ alignItems: "center", flexDirection: "column" }}>
                 <View style={styles.topMargin}>
                   <Text>
