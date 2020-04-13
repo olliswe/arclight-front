@@ -12,7 +12,7 @@ import {
 import { Image, StyleSheet, View } from "react-native";
 import { UserContext, UserContextProps } from "../context/userContext";
 import axios from "axios";
-import { API_URL } from "../constants";
+import { API_URL, VERSION_NO } from "../constants";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthNavigationParams } from "../navigation/AuthNavigation";
 import { RootStackParams } from "../App";
@@ -62,6 +62,11 @@ const Login: React.FC<{ navigation: LoginScreenNavigationProp }> = ({
             source={require("../assets/arclight_logo.png")}
             style={styles.image}
           />
+        </View>
+        <View>
+          <Text style={{ textAlign: "center", fontSize: 12, marginTop: 10 }}>
+            Version {VERSION_NO}
+          </Text>
         </View>
         <Form style={styles.form}>
           <Item style={styles.item}>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   form: {
-    marginTop: 50,
+    marginTop: 40,
   },
   item: {
     marginBottom: 30,
