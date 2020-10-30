@@ -1,5 +1,5 @@
 import React from "react";
-import { Body, Card, CardItem, Col, Grid, Text } from "native-base";
+import { Body, Card, CardItem, Col, Grid, Text } from "@codler/native-base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { DiagnosisNavigationProp } from "../screens/Diagnosis";

@@ -1,5 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
-import { Button, Container, Icon, Spinner, Text, Textarea } from "native-base";
+import {
+  Button,
+  Container,
+  Icon,
+  Spinner,
+  Text,
+  Textarea,
+} from "@codler/native-base";
 import { ProgressStep, ProgressSteps } from "react-native-progress-steps";
 import { Alert, StyleSheet, View } from "react-native";
 import * as Permissions from "expo-permissions";

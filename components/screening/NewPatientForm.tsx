@@ -7,7 +7,7 @@ import {
   Item,
   Label,
   Text,
-} from "native-base";
+} from "@codler/native-base";
 import { StyleSheet, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { PatientData } from "../../types";

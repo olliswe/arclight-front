@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "native-base";
+import { Container } from "@codler/native-base";
 import AppHeader from "../components/Header";
 
 // (WrapperComponent:React.FC) => React.FC<NavProps>

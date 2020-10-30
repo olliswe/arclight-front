@@ -9,7 +9,7 @@ import { StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import withUserContext from "./higher_order_components/UserContextWrapper";
-import { Linking } from "expo";
+import * as Linking from "expo-linking";
 import { API_URL } from "./constants";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
@@ -22,6 +22,7 @@ import { NavigationContainer, useLinking } from "@react-navigation/native";
 import AppNavigation, { appRouteConfig } from "./navigation/AppNavigation";
 import AuthNavigation, { authRouteConfig } from "./navigation/AuthNavigation";
 import { InitialState } from "@react-navigation/routers/src/types";
+import * as Permissions from "expo-permissions";
 
 console.disableYellowBox = true;
 
@@ -86,8 +87,8 @@ const App = () => {
 
   const loadFont = async () => {
     await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Roboto: require("@codler/native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("@codler/native-base/Fonts/Roboto_medium.ttf"),
       ...Ionicons.font,
     });
   };

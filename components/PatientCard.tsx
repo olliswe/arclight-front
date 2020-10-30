@@ -1,5 +1,13 @@
 import React from "react";
-import { Body, Card, CardItem, Col, Grid, Left, Text } from "native-base";
+import {
+  Body,
+  Card,
+  CardItem,
+  Col,
+  Grid,
+  Left,
+  Text,
+} from "@codler/native-base";
 import { Ionicons } from "@expo/vector-icons";
 import { PatientData } from "../types";
 

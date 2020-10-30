@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Input, Item } from "native-base";
+import { Input, Item } from "@codler/native-base";
 import { useLazyQuery } from "react-apollo";
 import { gql } from "apollo-boost";
 import { PatientData, PatientQueryObject } from "../../types";

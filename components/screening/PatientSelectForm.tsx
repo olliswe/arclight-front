@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Container, Spinner } from "native-base";
+import { Container, Spinner } from "@codler/native-base";
 import { StyleSheet, Switch, Text, View } from "react-native";
 import NewPatientForm from "./NewPatientForm";
 import PatientSelect from "./PatientSelect";

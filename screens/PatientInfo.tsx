@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Content } from "native-base";
+import { Content } from "@codler/native-base";
 import PatientCard from "../components/PatientCard";
 import { useQuery } from "react-apollo";
 import { gql } from "apollo-boost";

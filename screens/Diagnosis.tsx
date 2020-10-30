@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Tab, Tabs } from "native-base";
+import { Container, Tab, Tabs } from "@codler/native-base";
 import ReviewedTab from "../components/diagnosis/ReviewedTab";
 import PendingTab from "../components/diagnosis/PendingTab";
 import ArchivedTab from "../components/diagnosis/ArchivedTab";

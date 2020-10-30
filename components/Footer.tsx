@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Footer, FooterTab, Icon } from "native-base";
+import { Button, Footer, FooterTab, Icon } from "@codler/native-base";
 
 const AppFooter: React.FC = () => {
   return (

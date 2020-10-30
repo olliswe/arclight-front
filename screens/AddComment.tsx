@@ -11,7 +11,7 @@ import {
   Text,
   Textarea,
   Title,
-} from "native-base";
+} from "@codler/native-base";
 import { Keyboard, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { UserContext, UserContextProps } from "../context/userContext";
 import axios from "axios";

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Spinner, Text } from "native-base";
+import { Button, Spinner, Text } from "@codler/native-base";
 import { UserContext } from "../context/userContext";
 
 const LogoutButton: React.FC = () => {

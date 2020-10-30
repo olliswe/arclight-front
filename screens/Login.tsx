@@ -8,7 +8,7 @@ import {
   Item,
   Spinner,
   Text,
-} from "native-base";
+} from "@codler/native-base";
 import { Image, StyleSheet, View } from "react-native";
 import { UserContext, UserContextProps } from "../context/userContext";
 import axios from "axios";

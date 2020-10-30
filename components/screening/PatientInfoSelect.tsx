@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Button, Container } from "native-base";
+import { Button, Container } from "@codler/native-base";
 
 interface Props {
   setSelectPatient: React.Dispatch<React.SetStateAction<boolean>>;

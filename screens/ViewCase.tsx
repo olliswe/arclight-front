@@ -12,7 +12,7 @@ import {
   Right,
   Text,
   Title,
-} from "native-base";
+} from "@codler/native-base";
 import {
   DoctorCommentData,
   ScreenerCommentData,
