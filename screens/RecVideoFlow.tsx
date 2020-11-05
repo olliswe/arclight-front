@@ -1,5 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
-import { Button, Container, Icon, Spinner, Text, Textarea } from "native-base";
+import {
+  Button,
+  Container,
+  Icon,
+  Spinner,
+  Text,
+  Textarea,
+} from "@codler/native-base";
 import { ProgressStep, ProgressSteps } from "react-native-progress-steps";
 import { Alert, StyleSheet, View } from "react-native";
 import * as Permissions from "expo-permissions";
@@ -252,22 +259,39 @@ const RecVideoFlow: React.FC<{
               scrollViewProps={{ scrollEnabled: false }}
             >
               {!!recordedVideo.uri ? (
-                <View style={{ flexDirection: "column", alignItems: "center" }}>
+                <View
+                  style={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: 20,
+                  }}
+                >
                   <Text style={styles.topMargin}>
                     Video was successfully recorded !
                   </Text>
-                  <Button onPress={showRecording} style={styles.topMargin}>
+                  <Button onPress={showRecording} style={styles.button}>
                     <Text>Show Recording</Text>
                     <Icon name="eye" />
                   </Button>
-                  <Button style={styles.topMargin} onPress={redoRecording}>
+                  <Button style={styles.button} onPress={redoRecording}>
                     <Text>Redo Recording</Text>
                     <Icon name="refresh" />
                   </Button>
                 </View>
               ) : (
-                <View style={{ flexDirection: "column", alignItems: "center" }}>
-                  <Button onPress={_showCamera}>
+                <View
+                  style={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    onPress={_showCamera}
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                  >
                     <Text>Start Recording</Text>
                     <Icon name="camera" />
                   </Button>
@@ -314,7 +338,7 @@ const RecVideoFlow: React.FC<{
                   </Text>
                 </View>
                 <View>
-                  <Button onPress={showRecording} style={styles.topMargin}>
+                  <Button onPress={showRecording} style={styles.button}>
                     <Text>Show Recording</Text>
                     <Icon name="eye" />
                   </Button>
@@ -343,6 +367,11 @@ const RecVideoFlow: React.FC<{
 const styles = StyleSheet.create({
   topMargin: {
     marginTop: 50,
+  },
+  button: {
+    marginTop: 50,
+    justifyContent: "center",
+    width: 300,
   },
   bold: {
     fontWeight: "bold",

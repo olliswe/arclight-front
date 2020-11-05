@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Image, StyleSheet } from "react-native";
-import { Body, Card, CardItem, Content, H3 } from "native-base";
+import { Body, Card, CardItem, Content, H3 } from "@codler/native-base";
 import { UserContext } from "../context/userContext";
 import withHeader from "../higher_order_components/AuthHeaderFooterWrapper";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Content, Grid, Text } from "native-base";
+import { Content, Grid, Text } from "@codler/native-base";
 import { StyleSheet } from "react-native";
 import DoctorComment from "./DoctorComment";
 import ScreenerComment from "./ScreenerComment";

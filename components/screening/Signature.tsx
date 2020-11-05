@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
-import { Text, Button } from "native-base";
+import { Text, Button } from "@codler/native-base";
 //@ts-ignore
 import * as ExpoPixi from "expo-pixi";
-import { ScreenOrientation } from "expo";
-import { OrientationLock } from "expo/build/ScreenOrientation/ScreenOrientation.types";
+import * as ScreenOrientation from "expo-screen-orientation";
 import PageLoading from "../loadingSpinners/PageLoading";
 
 interface Props {
@@ -16,9 +15,9 @@ const Signature = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    ScreenOrientation.lockAsync(OrientationLock.LANDSCAPE_RIGHT).then((res) =>
-      setLoading(false)
-    );
+    ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+    ).then((res) => setLoading(false));
     return () => {
       ScreenOrientation.unlockAsync();
     };

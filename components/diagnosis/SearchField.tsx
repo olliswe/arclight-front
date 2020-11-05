@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Icon, Input, Item, Spinner } from "native-base";
+import { Button, Icon, Input, Item, Spinner } from "@codler/native-base";
 import { StyleSheet } from "react-native";
 
 interface Props {

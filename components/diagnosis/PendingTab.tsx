@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Content, Text } from "native-base";
+import { Content, Text } from "@codler/native-base";
 import SearchField from "./SearchField";
 import { useApolloClient } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";

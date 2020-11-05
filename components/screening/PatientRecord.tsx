@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Text } from "native-base";
+import { Button, Text } from "@codler/native-base";
 import { PatientData } from "../../types";
 
 interface Props {

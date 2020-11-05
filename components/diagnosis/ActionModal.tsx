@@ -1,6 +1,14 @@
 import React, { useContext } from "react";
 import { Alert, Dimensions, Modal, StyleSheet, View } from "react-native";
-import { Button, Icon, Left, List, ListItem, Right, Text } from "native-base";
+import {
+  Button,
+  Icon,
+  Left,
+  List,
+  ListItem,
+  Right,
+  Text,
+} from "@codler/native-base";
 import { useNavigation } from "@react-navigation/native";
 import { AddCommentScreenNavigationProp } from "../../screens/AddComment";
 import { UserContext, UserContextProps } from "../../context/userContext";

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Card, CardItem, Content, Text } from "native-base";
+import { Card, CardItem, Content, Text } from "@codler/native-base";
 import Divider from "../Divider";
 import { ScreenerCommentData } from "../../types";
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as MediaLibrary from "expo-media-library";
 import { Camera } from "expo-camera";
 import { Platform, StyleSheet, TouchableOpacity } from "react-native";
 import * as Permissions from "expo-permissions";
-import { Container, Text } from "native-base";
+import { Container, Text } from "@codler/native-base";
 import { Ionicons } from "@expo/vector-icons";
 import { VideoFile } from "../../screens/RecVideoFlow";
 
@@ -29,7 +29,8 @@ const MyCam: React.FC<Props> = (props) => {
     (async () => {
       const { status } = await Permissions.askAsync(
         Permissions.AUDIO_RECORDING,
-        Permissions.CAMERA
+        Permissions.CAMERA,
+        Permissions.CAMERA_ROLL
       );
       setHasPermission(true);
     })();
@@ -40,45 +41,62 @@ const MyCam: React.FC<Props> = (props) => {
       ? { quality: Camera.Constants.VideoQuality["4:3"] }
       : {};
 
-  const recordVideo = async () => {
+  const recordVideo = useCallback(async () => {
     if (!!cam.current) {
       return await cam.current.recordAsync({ ...getOptions() });
     } else {
       alert("The Camera is still loading, please wait!");
     }
-  };
+  }, []);
+
+  const saveVideo = useCallback(
+    async (video: { uri: string } | undefined) => {
+      if (!!video) {
+        console.log("hi");
+        const asset = await MediaLibrary.createAssetAsync(video.uri);
+        console.log(asset);
+        console.log("get");
+        console.log(await MediaLibrary.getAssetsAsync());
+        const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
+        console.log("domne");
+        if (asset) {
+          props.setRecordedVideo({
+            uri: assetInfo.localUri,
+            filename: asset.filename,
+          });
+          console.log("video saved!");
+        }
+        return "Video Saved";
+      } else {
+        alert(
+          "An error occurred when attempting to access the recorded video!"
+        );
+      }
+    },
+    [props.setRecordedVideo]
+  );
+
+  const recordAndSaveVideo = useCallback(async () => {
+    try {
+      const res = await recordVideo();
+      await saveVideo(res);
+      props.setShowCamera(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [recordVideo, saveVideo, props.setShowCamera]);
 
   useEffect(() => {
+    console.log(recording);
     if (!!cam.current) {
+      console.log("foo");
       if (recording) {
-        recordVideo()
-          .then((res) => {
-            console.log("callback from stopped recording");
-            saveVideo(res).then((res) => props.setShowCamera(false));
-          })
-          .catch((error) => console.log(error));
+        recordAndSaveVideo();
       } else if (recording === false) {
         cam.current.stopRecording();
       }
     }
-  }, [recording]);
-
-  const saveVideo = async (video: { uri: string } | undefined) => {
-    if (!!video) {
-      const asset = await MediaLibrary.createAssetAsync(video.uri);
-      const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
-      if (asset) {
-        props.setRecordedVideo({
-          uri: assetInfo.localUri,
-          filename: asset.filename,
-        });
-        console.log("video saved!");
-      }
-      return "Video Saved";
-    } else {
-      alert("An error occurred when attempting to access the recorded video!");
-    }
-  };
+  }, [recording, recordAndSaveVideo]);
 
   const stopRecord = () => {
     setRecording(false);

@@ -8,10 +8,10 @@ import {
   Item,
   Spinner,
   Text,
-} from "native-base";
+} from "@codler/native-base";
 import { Image, StyleSheet, View } from "react-native";
 import axios from "axios";
-import { Linking } from "expo";
+import * as Linking from "expo-linking";
 import { API_URL } from "../constants";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthNavigationParams } from "../navigation/AuthNavigation";

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Spinner } from "native-base";
+import { Spinner } from "@codler/native-base";
 
 const PageLoading = () => {
   return (

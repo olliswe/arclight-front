@@ -8,7 +8,7 @@ import {
   Item,
   Spinner,
   Text,
-} from "native-base";
+} from "@codler/native-base";
 import { Image, StyleSheet, View } from "react-native";
 import { UserContext, UserContextProps } from "../context/userContext";
 import axios from "axios";
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
   },
   button: {
     justifyContent: "center",
+    width: "100%",
   },
   link: {
     textAlign: "center",

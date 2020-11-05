@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid, Row, Text } from "native-base";
+import { Button, Grid, Row, Text } from "@codler/native-base";
 import { ScreeningStackParamList } from "../navigation/AppNavigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 

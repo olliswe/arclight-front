@@ -8,7 +8,7 @@ import {
   Grid,
   Right,
   Text,
-} from "native-base";
+} from "@codler/native-base";
 import { Ionicons } from "@expo/vector-icons";
 import { PatientData } from "../../types";
 import { StyleSheet, TouchableOpacity } from "react-native";
