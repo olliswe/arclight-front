@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
   },
   button: {
     justifyContent: "center",
+    width: "100%",
   },
   link: {
     textAlign: "center",

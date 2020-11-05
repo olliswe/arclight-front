@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 50,
     padding: 10,
+    width: "100%",
+    justifyContent: "center",
   },
   text: {
     color: "white",

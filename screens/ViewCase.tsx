@@ -10,6 +10,7 @@ import {
   Icon,
   Left,
   Right,
+  Spinner,
   Text,
   Title,
 } from "@codler/native-base";
@@ -95,6 +96,7 @@ const ViewCase: React.FC<{
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [videoLoading, setVideoLoading] = useState<boolean>(false);
 
   const { id } = route.params;
 
@@ -102,10 +104,12 @@ const ViewCase: React.FC<{
 
   let videoRef = useRef<Video>(null);
 
-  const showRecording = () => {
+  const showRecording = async () => {
+    setVideoLoading(true);
     if (!!videoRef.current) {
-      videoRef.current.presentFullscreenPlayer();
+      await videoRef.current.presentFullscreenPlayer();
     }
+    setVideoLoading(false);
   };
 
   const getCaseData = () => {
@@ -239,7 +243,14 @@ const ViewCase: React.FC<{
                 block
                 style={styles.blockButton}
               >
-                <Text>View video recording</Text>
+                {videoLoading ? (
+                  <React.Fragment>
+                    <Text>Fetching video...</Text>
+                    <Spinner size="small" />
+                  </React.Fragment>
+                ) : (
+                  <Text>View video recording</Text>
+                )}
               </Button>
               <Button
                 block

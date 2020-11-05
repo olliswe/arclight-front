@@ -273,8 +273,20 @@ const RecVideoFlow: React.FC<{
                   </Button>
                 </View>
               ) : (
-                <View style={{ flexDirection: "column", alignItems: "center" }}>
-                  <Button onPress={_showCamera}>
+                <View
+                  style={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: 10,
+                  }}
+                >
+                  <Button
+                    onPress={_showCamera}
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                  >
                     <Text>Start Recording</Text>
                     <Icon name="camera" />
                   </Button>
