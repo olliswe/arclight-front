@@ -134,7 +134,11 @@ const NewPatientForm: React.FC<Props> = (props) => {
         </Item>
       </View>
       <View style={[styles.inputrow, styles.center, styles.container]}>
-        <Button onPress={handleSubmit} disabled={isDisabled}>
+        <Button
+          onPress={handleSubmit}
+          disabled={isDisabled}
+          style={{ width: "100%", justifyContent: "center" }}
+        >
           <Text>Add Patient</Text>
         </Button>
       </View>
